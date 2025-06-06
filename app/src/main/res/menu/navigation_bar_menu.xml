@@ -9,5 +9,9 @@
         android:title="Search"
         android:icon="@drawable/ic_search"
         />
-
+    <item
+        android:id="@+id/exhibitions"
+        android:title="Exhibitions"
+        android:icon="@drawable/ic_exhibition"
+        />
 </menu>
