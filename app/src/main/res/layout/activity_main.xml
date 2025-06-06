@@ -22,9 +22,9 @@
         android:id="@+id/BottomNavView"
         app:menu="@menu/navigation_bar_menu"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:itemIconSize="50sp"
+        app:itemIconSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
