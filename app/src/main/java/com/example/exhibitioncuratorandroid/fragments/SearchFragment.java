@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentSearchBinding;
@@ -38,7 +39,21 @@ public class SearchFragment extends Fragment {
         if (getArguments() != null) {
             searchQuery = getArguments().getString(ARG_PARAM1);
         }
+    }
 
+    @Override
+    public void onViewCreated(View view,Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        initialiseButtons();
+    }
+
+    private void initialiseButtons(){
+        initialiseSearchBar();
+    }
+
+    private void initialiseSearchBar(){
+        SearchView searchView = binding.searchTabSearchView;
+        searchView.setQuery(searchQuery,false);
     }
 
     @Override
