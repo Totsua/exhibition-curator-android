@@ -41,6 +41,19 @@
             android:background="@color/white"
             />
 
+        <Button
+            android:id="@+id/homeTabSearchButton"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:text="SEARCH"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/homeTabSearchView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.12"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
 </layout>
