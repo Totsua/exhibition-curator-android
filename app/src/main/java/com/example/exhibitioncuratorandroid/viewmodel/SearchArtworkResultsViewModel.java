@@ -11,9 +11,9 @@ import com.example.exhibitioncuratorandroid.repository.SearchArtworkRepository;
 
 import java.util.List;
 
-public class SearchArtworkRepositoryViewModel extends AndroidViewModel {
+public class SearchArtworkResultsViewModel extends AndroidViewModel {
     SearchArtworkRepository searchArtworkRepository;
-    public SearchArtworkRepositoryViewModel(@NonNull Application application) {
+    public SearchArtworkResultsViewModel(@NonNull Application application) {
         super(application);
         this.searchArtworkRepository = new SearchArtworkRepository(application);
     }
