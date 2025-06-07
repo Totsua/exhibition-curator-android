@@ -68,7 +68,7 @@
                 />
 
             <Button
-                android:id="@+id/homeTabSearchButton"
+                android:id="@+id/searchTabNextButton"
                 android:layout_width="100dp"
                 android:layout_height="80dp"
                 android:text="Next"
