@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
+import com.example.exhibitioncuratorandroid.MainActivity;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentHomeBinding;
+import com.google.android.material.navigation.NavigationBarView;
 
 
 public class HomeFragment extends Fragment {
@@ -65,7 +67,14 @@ public class HomeFragment extends Fragment {
                         .beginTransaction()
                         .replace(R.id.homeFrameLayoutFragment,searchFragment)
                         .commit();
+
+                NavigationBarView nav = getActivity().findViewById(R.id.BottomNavView);
+                nav.setOnItemSelectedListener(null);
+                nav.setSelectedItemId(R.id.search); // Update UI highlight only
+                nav.setOnItemSelectedListener((MainActivity) getActivity());
+
             }
+
         });
 
 
