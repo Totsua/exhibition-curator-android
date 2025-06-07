@@ -34,6 +34,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:iconifiedByDefault="false"
+                android:queryHint="Search For An Artwork"
                 app:layout_constraintBottom_toTopOf="@+id/searchTabRecyclerView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
