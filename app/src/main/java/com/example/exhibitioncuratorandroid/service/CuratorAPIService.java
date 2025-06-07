@@ -1,5 +1,7 @@
 package com.example.exhibitioncuratorandroid.service;
 
+import com.example.exhibitioncuratorandroid.model.ArtworkResults;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,7 +16,7 @@ public interface CuratorAPIService {
 
 
     @GET("/search")
-    Call<List<ArtworkResults>> getArtworkSearchResults(@Query(value = "query") String query,@Query(value = "page")Integer page);
+    Call<ArtworkResults> getArtworkSearchResults(@Query(value = "query") String query, @Query(value = "page")Integer page);
 
     @POST("/exhibitions/create")
     Call<Exhibition> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);

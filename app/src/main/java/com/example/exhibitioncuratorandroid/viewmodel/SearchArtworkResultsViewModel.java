@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.repository.SearchArtworkRepository;
 
-import java.util.List;
 
 public class SearchArtworkResultsViewModel extends AndroidViewModel {
     SearchArtworkRepository searchArtworkRepository;
@@ -17,7 +16,7 @@ public class SearchArtworkResultsViewModel extends AndroidViewModel {
         super(application);
         this.searchArtworkRepository = new SearchArtworkRepository(application);
     }
-    public MutableLiveData<List<ArtworkResults>> getArtworkSearchResults(String query, Integer page){
+    public MutableLiveData<ArtworkResults> getArtworkSearchResults(String query, Integer page){
         return searchArtworkRepository.getMutableLiveData(query,page);
     }
 }
