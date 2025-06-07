@@ -12,28 +12,29 @@ import com.example.exhibitioncuratorandroid.R;
 
 public class SearchFragment extends Fragment {
 
+    private static final String ARG_PARAM1 = "param1";
+    private String searchQuery;
+
     public SearchFragment() {
         // Required empty public constructor
     }
 
 
-/*    public static SearchFragment newInstance(String param1, String param2) {
+    public static SearchFragment newInstance(String param1) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }*/
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
+        if (getArguments() != null) {
+            searchQuery = getArguments().getString(ARG_PARAM1);
+        }
 
     }
 

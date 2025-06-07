@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SearchView;
 
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentHomeBinding;
@@ -37,6 +39,36 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
+    }
+
+    @Override
+    public void onViewCreated(View view,Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        initialiseButtons();
+    }
+    private void initialiseButtons(){
+        initialiseSearch();
+    }
+
+    private void initialiseSearch(){
+        SearchView searchView = binding.homeTabSearchView;
+        searchView.clearFocus();
+
+        Button searchButton = binding.homeTabSearchButton;
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query = searchView.getQuery().toString();
+                SearchFragment searchFragment = SearchFragment.newInstance(query);
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.homeFrameLayoutFragment,searchFragment)
+                        .commit();
+            }
+        });
+
+
     }
 
     @Override
