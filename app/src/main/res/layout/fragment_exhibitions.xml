@@ -36,19 +36,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/exhibitionsTabAddButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/exhibitionsTabTitle"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintHorizontal_bias="0.1"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
