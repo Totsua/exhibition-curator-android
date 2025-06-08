@@ -41,6 +41,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     private RecyclerView recyclerView;
     private SearchArtworkResultsAdapter adapter;
     private int counter = 1;
+    private boolean hasShownEmptyToast = false;
 
 
     public SearchFragment() {
@@ -100,12 +101,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                 searchQuery = searchView.getQuery().toString();
                 counter = 1;
                 getSearchResults(searchQuery,counter);
-//                if(counter == 1){
-////                getSearchResults(searchQuery,counter);
-//
-//                }else{
-//                    getSearchResults(searchQuery,counter);
-//                }
                 searchView.setQuery(searchQuery,false);
                 return false;
             }
@@ -170,18 +165,23 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
     //todo: method for changing "page" text
 
     private void verifyResults(ArtworkResults artworkResults){
+
         if(artworkResults.getArtworks().isEmpty()){
             counter = 1;
             isButtonEnabled("Prev",false);
             isButtonEnabled("Next",false);
-            Toast.makeText(this.getContext(), "There are no results", Toast.LENGTH_SHORT).show();
+            if(!hasShownEmptyToast ){
+                Toast.makeText(this.getContext(), "There are no results", Toast.LENGTH_SHORT).show();
+                hasShownEmptyToast = true;
+            }
+
             // text "page" = "page 0/0" or make it invisible
         }else{
+            hasShownEmptyToast = false;
             if(counter != 1){
                 isButtonEnabled("Prev",true);
             }
-//            if(counter < artworkResults.getTotalPages())
-            isButtonEnabled("Next",true);
+            isButtonEnabled("Next", counter < artworkResults.getTotal_pages());
         }
         displayInRecyclerView();
     }
