@@ -72,6 +72,8 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
             searchQuery = getArguments().getString(ARG_PARAM1);
             getSearchResults(searchQuery,1);
         }
+        isButtonEnabled("Prev",false);
+        isButtonEnabled("Next",false);
         initialiseButtons();
 
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
