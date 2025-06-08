@@ -6,11 +6,13 @@ public class ArtworkResults {
     private String query;
     private Integer page;
     private ArrayList<Artwork> artworks;
+    private Integer total_pages;
 
-    public ArtworkResults(String query, Integer page, ArrayList<Artwork> artworks) {
+    public ArtworkResults(String query, Integer page, ArrayList<Artwork> artworks, Integer total_pages) {
         this.query = query;
         this.page = page;
         this.artworks = artworks;
+        this.total_pages = total_pages;
     }
 
     public String getQuery() {
@@ -23,5 +25,9 @@ public class ArtworkResults {
 
     public Integer getPage() {
         return page;
+    }
+
+    public Integer getTotal_pages() {
+        return total_pages;
     }
 }
