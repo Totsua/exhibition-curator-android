@@ -21,7 +21,7 @@ public interface CuratorAPIService {
     @POST("exhibitions/create")
     Call<Void> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);
 
-    @GET("/exhibitions")
+    @GET("exhibitions")
     Call<List<Exhibition>> getAllExhibitions();
 
     @DELETE("/exhibitions/{id}")
