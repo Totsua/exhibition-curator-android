@@ -4,18 +4,32 @@ import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.exhibitioncuratorandroid.R;
+import com.example.exhibitioncuratorandroid.adapter.ExhibitionListAdapter;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
 import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionsBinding;
+import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExhibitionsFragment extends Fragment implements RecyclerViewInterface {
 
     FragmentExhibitionsBinding binding;
+    private ExhibitionsViewModel viewModel;
+    private RecyclerView recyclerView;
+    private ArrayList<Exhibition> exhibitionsList;
+    private ExhibitionListAdapter adapter;
 
     public ExhibitionsFragment() {
         // Required empty public constructor
@@ -37,17 +51,38 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }*/
+        viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initialiseButtons();
+        getAllExhibitions();
     }
 
     private void initialiseButtons() {
     }
 
+
+    private void getAllExhibitions(){
+        viewModel.getAllExhibitions().observe(getViewLifecycleOwner(), new Observer<List<Exhibition>>() {
+            @Override
+            public void onChanged(List<Exhibition> exhibitions) {
+                exhibitionsList = (ArrayList<Exhibition>) exhibitions;
+                displayInRecyclerView();
+            }
+        });
+    }
+
+    public void displayInRecyclerView(){
+        recyclerView = binding.exhibitionsTabRecyclerView;
+        adapter = new ExhibitionListAdapter(exhibitionsList,this,this.getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setHasFixedSize(true);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +94,8 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
 
     @Override
     public void onItemClick(int position) {
-        
+        Exhibition exhibition = exhibitionsList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("EXHIBITION",exhibition);
     }
 }
