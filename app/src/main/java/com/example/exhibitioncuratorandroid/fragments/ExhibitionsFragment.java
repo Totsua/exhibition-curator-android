@@ -2,6 +2,7 @@ package com.example.exhibitioncuratorandroid.fragments;
 
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,9 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.exhibitioncuratorandroid.R;
+import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
+import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionsBinding;
 
-public class ExhibitionsFragment extends Fragment {
+public class ExhibitionsFragment extends Fragment implements RecyclerViewInterface {
 
+    FragmentExhibitionsBinding binding;
 
     public ExhibitionsFragment() {
         // Required empty public constructor
@@ -36,9 +40,25 @@ public class ExhibitionsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initialiseButtons();
+    }
+
+    private void initialiseButtons() {
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_exhibitions, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exhibitions, container, false);
+        return binding.getRoot();
+        }
+
+    @Override
+    public void onItemClick(int position) {
+        
     }
 }
