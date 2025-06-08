@@ -9,8 +9,6 @@ import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.service.CuratorAPIService;
 import com.example.exhibitioncuratorandroid.service.RetroFitInstance;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,12 +19,13 @@ public class SearchArtworkRepository {
 
     public SearchArtworkRepository(Application application){this.application = application;}
 
-    public MutableLiveData<ArtworkResults> getMutableLiveData(String query, Integer page){
+    public MutableLiveData<ArtworkResults> getMutableLiveData(String query, Integer page, MutableLiveData<Boolean> isLoading){
         CuratorAPIService curatorAPIService = RetroFitInstance.getService();
         Call<ArtworkResults> call = curatorAPIService.getArtworkSearchResults(query, page);
         call.enqueue(new Callback<ArtworkResults>() {
             @Override
             public void onResponse(Call<ArtworkResults> call, Response<ArtworkResults> response) {
+                isLoading.setValue(false);
                 if(response.code() == 200){
                     ArtworkResults results = response.body();
                     mutableLiveData.setValue(results);
@@ -37,6 +36,7 @@ public class SearchArtworkRepository {
 
             @Override
             public void onFailure(Call<ArtworkResults> call, Throwable t) {
+                isLoading.setValue(false);
                 Toast.makeText(application, "Network Error", Toast.LENGTH_SHORT).show();
             }
         });

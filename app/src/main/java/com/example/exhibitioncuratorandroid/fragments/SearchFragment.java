@@ -1,10 +1,12 @@
 package com.example.exhibitioncuratorandroid.fragments;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -70,6 +72,12 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
             getSearchResults(searchQuery,1);
         }
         initialiseButtons();
+
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
+            if(isLoading != null){
+                binding.searchTabLoadingOverlay.setVisibility(isLoading ? VISIBLE : GONE);
+            }
+        });
     }
 
     private void initialiseButtons(){
