@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 public interface CuratorAPIService {
 
 
-    @GET("/search")
+    @GET("search")
     Call<ArtworkResults> getArtworkSearchResults(@Query(value = "query") String query, @Query(value = "page")Integer page);
 
     @POST("/exhibitions/create")
