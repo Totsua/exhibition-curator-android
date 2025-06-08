@@ -36,10 +36,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/exhibitionsTabAddButton"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/ic_add"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.95"
+            app:layout_constraintHorizontal_bias="0.1"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            />
+
+
+       <!-- <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,9 +65,51 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="15dp"
             />
+-->
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/exhibitionsTabAddButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_add"
+            android:scaleType="fitEnd"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintHorizontal_bias="0.1"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            />-->
 
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:id="@+id/exhibitionsTabLoadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/exhibitionsTabProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </FrameLayout>
 </layout>
