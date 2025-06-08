@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.ArtworkSearchResultItemBinding;
 import com.example.exhibitioncuratorandroid.model.Artwork;
@@ -46,6 +48,11 @@ public class SearchArtworkResultsAdapter extends RecyclerView.Adapter<SearchArtw
     @Override
     public void onBindViewHolder(@NonNull SearchArtworkResultsViewHolder holder, int position) {
         Artwork artwork = artworkList.get(position);
+        ImageView imageView = holder.binding.artworkCardImage;
+        Glide.with(imageView)
+                .load(artwork.getImageUrl())
+                .into(imageView);
+
         holder.binding.setArtwork(artwork);
 
     }
