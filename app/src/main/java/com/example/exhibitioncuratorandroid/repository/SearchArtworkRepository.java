@@ -1,6 +1,7 @@
 package com.example.exhibitioncuratorandroid.repository;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
@@ -8,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.service.CuratorAPIService;
 import com.example.exhibitioncuratorandroid.service.RetroFitInstance;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,11 +29,24 @@ public class SearchArtworkRepository {
             @Override
             public void onResponse(Call<ArtworkResults> call, Response<ArtworkResults> response) {
                 isLoading.setValue(false);
-                if(response.code() == 200){
-                    ArtworkResults results = response.body();
-                    mutableLiveData.setValue(results);
-                }else{ // todo: server codes and what they mean as Toasts
-                    Toast.makeText(application, "", Toast.LENGTH_SHORT).show();
+                switch (response.code()){
+                    case 200:
+                        ArtworkResults results = response.body();
+                        mutableLiveData.setValue(results);
+                        break;
+                    case 416:
+                        Toast.makeText(application, "Page number out of bounds", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 500:
+                        if (response.body() != null) {
+                            Log.e("SearchArtworkRepository OkHttpClient",response.body().toString());
+                        }
+                        ArtworkResults artwork500Results = new ArtworkResults(query,page,new ArrayList<>(),1);
+                        mutableLiveData.setValue(artwork500Results);
+                        Toast.makeText(application, "Server Error Occurred", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Unknown Server Error: Contact the developer", Toast.LENGTH_SHORT).show();
                 }
             }
 
