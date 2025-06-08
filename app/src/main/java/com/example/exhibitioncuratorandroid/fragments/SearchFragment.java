@@ -93,10 +93,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                // todo: if counter isn't 1, change it to 1
-                //  or some sort of check to see what the page is and
-                //  a reset if they make another call
-                //  Should counter go to 0 if results are empty???
 
                 searchQuery = searchView.getQuery().toString();
                 counter = 1;
@@ -131,10 +127,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
             public void onClick(View view) {
                 counter ++;
                 getSearchResults(searchQuery,counter);
-//                if(counter < totalPages){
-//                    counter ++;
-//                    getSearchResults(searchQuery,counter);
-//                }
             }
         });
     }
@@ -176,7 +168,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                 changePageText(0,0);
             }
 
-            // text "page" = "page 0/0" or make it invisible
         }else{
             hasShownEmptyToast = false;
             if(counter != 1){
