@@ -202,6 +202,19 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onItemClick(int position) {
+        Artwork artwork = artworkList.get(position);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("ARTWORK",artwork);
+
+        ArtworkDetailsFragment fragment = new ArtworkDetailsFragment();
+        fragment.setArguments(bundle);
+
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeFrameLayoutFragment,fragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 }
