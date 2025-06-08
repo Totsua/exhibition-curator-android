@@ -18,8 +18,8 @@ public interface CuratorAPIService {
     @GET("search")
     Call<ArtworkResults> getArtworkSearchResults(@Query(value = "query") String query, @Query(value = "page")Integer page);
 
-    @POST("/exhibitions/create")
-    Call<Exhibition> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);
+    @POST("exhibitions/create")
+    Call<Void> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);
 
     @GET("/exhibitions")
     Call<List<Exhibition>> getAllExhibitions();
