@@ -173,6 +173,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
             if(!hasShownEmptyToast ){
                 Toast.makeText(this.getContext(), "There are no results", Toast.LENGTH_SHORT).show();
                 hasShownEmptyToast = true;
+                changePageText(0,0);
             }
 
             // text "page" = "page 0/0" or make it invisible
@@ -182,10 +183,14 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
                 isButtonEnabled("Prev",true);
             }
             isButtonEnabled("Next", counter < artworkResults.getTotal_pages());
+            changePageText(counter, artworkResults.getTotal_pages());
         }
         displayInRecyclerView();
     }
 
+    private void changePageText(int currentPage,int totalPages){
+        binding.searchTabPageText.setText("Page " + currentPage + "/" + totalPages);
+    }
     private void displayInRecyclerView(){
         recyclerView = binding.searchTabRecyclerView;
         adapter = new SearchArtworkResultsAdapter(artworkList,this.getContext(),this);
