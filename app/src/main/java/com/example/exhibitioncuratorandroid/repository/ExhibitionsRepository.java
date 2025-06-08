@@ -66,13 +66,16 @@ public class ExhibitionsRepository {
                     case 200:
                         List<Exhibition> exhibitionList = response.body();
                         liveExhibitionList.setValue(exhibitionList);
+                        break;
                     default:
                         if (response.body() != null) {
                             Log.e("SearchArtworkRepository OkHttpClient", String.valueOf(response.code()));
                             Log.e("SearchArtworkRepository OkHttpClient",response.body().toString());
                         }
+
                         liveExhibitionList.setValue(new ArrayList<>());
                         Toast.makeText(application, "Unknown Error Occurred", Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
             }
