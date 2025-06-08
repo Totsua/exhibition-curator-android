@@ -21,7 +21,12 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         this.exhibitionsRepository = new ExhibitionsRepository(application);
     }
     public void createExhibition(String title){
+        isLoading.setValue(true);
         exhibitionsRepository.createExhibition(title,isLoading);
     }
-    public LiveData<Boolean> getIsLoading(){return getIsLoading();}
+    public MutableLiveData<List<Exhibition>> getAllExhibitions(){
+        isLoading.setValue(true);
+        return exhibitionsRepository.getAllExhibitions(isLoading);
+    }
+    public LiveData<Boolean> getIsLoading(){return isLoading;}
 }
