@@ -1,4 +1,4 @@
-package com.example.exhibitioncuratorandroid;
+package com.example.exhibitioncuratorandroid.ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -6,9 +6,10 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.exhibitioncuratorandroid.fragments.ExhibitionsFragment;
-import com.example.exhibitioncuratorandroid.fragments.HomeFragment;
-import com.example.exhibitioncuratorandroid.fragments.SearchFragment;
+import com.example.exhibitioncuratorandroid.R;
+import com.example.exhibitioncuratorandroid.ui.fragments.ExhibitionsFragment;
+import com.example.exhibitioncuratorandroid.ui.fragments.HomeFragment;
+import com.example.exhibitioncuratorandroid.ui.fragments.SearchFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener{

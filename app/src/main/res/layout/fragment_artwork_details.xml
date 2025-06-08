@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/holo_blue_light"
-    tools:context=".fragments.ArtworkDetailsFragment">
+    tools:context=".ui.fragments.ArtworkDetailsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

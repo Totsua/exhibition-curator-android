@@ -1,4 +1,4 @@
-package com.example.exhibitioncuratorandroid.fragments;
+package com.example.exhibitioncuratorandroid.ui.fragments;
 
 import android.os.Bundle;
 

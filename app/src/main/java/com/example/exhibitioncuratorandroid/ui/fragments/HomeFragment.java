@@ -1,4 +1,4 @@
-package com.example.exhibitioncuratorandroid.fragments;
+package com.example.exhibitioncuratorandroid.ui.fragments;
 
 import android.os.Bundle;
 
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
 
-import com.example.exhibitioncuratorandroid.MainActivity;
+import com.example.exhibitioncuratorandroid.ui.MainActivity;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentHomeBinding;
 import com.google.android.material.navigation.NavigationBarView;

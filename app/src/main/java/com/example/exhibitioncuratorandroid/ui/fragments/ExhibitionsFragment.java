@@ -1,4 +1,4 @@
-package com.example.exhibitioncuratorandroid.fragments;
+package com.example.exhibitioncuratorandroid.ui.fragments;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;

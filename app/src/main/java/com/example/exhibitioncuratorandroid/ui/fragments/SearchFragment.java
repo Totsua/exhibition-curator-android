@@ -1,4 +1,4 @@
-package com.example.exhibitioncuratorandroid.fragments;
+package com.example.exhibitioncuratorandroid.ui.fragments;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -155,8 +155,6 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         }
     }
 
-
-    //todo: method for changing "page" text
 
     private void verifyResults(ArtworkResults artworkResults){
 

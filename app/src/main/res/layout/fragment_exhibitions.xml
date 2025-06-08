@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/holo_blue_light"
     android:layout_height="match_parent"
-    tools:context=".fragments.ExhibitionsFragment">
+    tools:context=".ui.fragments.ExhibitionsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
