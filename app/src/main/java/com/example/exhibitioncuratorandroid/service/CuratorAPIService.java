@@ -1,6 +1,8 @@
 package com.example.exhibitioncuratorandroid.service;
 
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
+import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public interface CuratorAPIService {
     @GET("exhibitions")
     Call<List<Exhibition>> getAllExhibitions();
 
-    @DELETE("/exhibitions/{id}")
-    Call<Void> deleteExhibition(@Path("id") Integer id);
+    /*
+    @DELETE("exhibitions/{id}")
+    Call<Void> deleteExhibition(@Path("id") Integer id);*/
 }

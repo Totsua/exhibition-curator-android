@@ -3,8 +3,11 @@ package com.example.exhibitioncuratorandroid.ui.fragments;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -16,14 +19,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.adapter.ExhibitionListAdapter;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
 import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionsBinding;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.ui.CreateExhibitionActivity;
 import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,9 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
     private RecyclerView recyclerView;
     private ArrayList<Exhibition> exhibitionsList;
     private ExhibitionListAdapter adapter;
+
+    private ActivityResultLauncher<Intent> backendRequestLauncher;
+
 
     public ExhibitionsFragment() {
         // Required empty public constructor
@@ -62,6 +67,16 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        backendRequestLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == CreateExhibitionActivity.RESULT_OK){
+                        viewModel.getAllExhibitions();
+                    }
+                }
+        );
+
         initialiseButtons();
         getAllExhibitions();
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
@@ -76,7 +91,8 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
         binding.exhibitionsTabAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getContext(), CreateExhibitionActivity.class);
+                backendRequestLauncher.launch(intent);
             }
         });
     }
@@ -114,5 +130,7 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
         Exhibition exhibition = exhibitionsList.get(position);
         Bundle bundle = new Bundle();
         bundle.putParcelable("EXHIBITION",exhibition);
+
+
     }
 }

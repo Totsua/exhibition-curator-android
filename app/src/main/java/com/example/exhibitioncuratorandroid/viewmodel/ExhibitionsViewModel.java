@@ -14,6 +14,7 @@ import java.util.List;
 
 public class ExhibitionsViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isSuccessful = new MutableLiveData<>();
     private ExhibitionsRepository exhibitionsRepository;
 
     public ExhibitionsViewModel(@NonNull Application application) {
@@ -22,11 +23,14 @@ public class ExhibitionsViewModel extends AndroidViewModel {
     }
     public void createExhibition(String title){
         isLoading.setValue(true);
-        exhibitionsRepository.createExhibition(title,isLoading);
+        isSuccessful.setValue(false);
+        exhibitionsRepository.createExhibition(title,isLoading, isSuccessful);
     }
     public MutableLiveData<List<Exhibition>> getAllExhibitions(){
         isLoading.setValue(true);
         return exhibitionsRepository.getAllExhibitions(isLoading);
     }
     public LiveData<Boolean> getIsLoading(){return isLoading;}
+
+    public LiveData<Boolean> getIsSuccessful(){return isSuccessful;}
 }

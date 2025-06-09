@@ -24,7 +24,7 @@ public class ExhibitionsRepository {
 
     public ExhibitionsRepository(Application application){this.application = application;}
 
-    public void createExhibition(String title, MutableLiveData<Boolean> isLoading){
+    public void createExhibition(String title, MutableLiveData<Boolean> isLoading,MutableLiveData<Boolean> isSuccessful){
         CuratorAPIService curatorAPIService = RetroFitInstance.getService();
         Call<Void> call = curatorAPIService.createExhibition(new ExhibitionCreateDTO(title));
         call.enqueue(new Callback<Void>() {
@@ -33,10 +33,12 @@ public class ExhibitionsRepository {
                 isLoading.setValue(false);
                 switch (response.code()){
                     case 201:
+                        isSuccessful.setValue(true);
                         Toast.makeText(application, "Exhibition Created", Toast.LENGTH_SHORT).show();
                         break;
                     case 404:
                         Toast.makeText(application,"Title Already Used",Toast.LENGTH_SHORT).show();
+                        break;
                     case 500:
                         Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
                         break;
