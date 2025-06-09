@@ -21,6 +21,7 @@ import retrofit2.Response;
 
 public class ExhibitionsRepository {
     private MutableLiveData<List<Exhibition>> liveExhibitionList = new MutableLiveData<>();
+    private MutableLiveData<Exhibition> liveExhibitionDetails = new MutableLiveData<>();
     private Application application;
 
     public ExhibitionsRepository(Application application){this.application = application;}
@@ -117,10 +118,37 @@ public class ExhibitionsRepository {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                isLoading.setValue(false);
                 Toast.makeText(application, "Network Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
+    public MutableLiveData<Exhibition> getExhibitionDetails(Long exhibitionId, MutableLiveData<Boolean> isLoading) {
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Exhibition> call = apiService.getExhibitionDetails(exhibitionId);
+        call.enqueue(new Callback<Exhibition>() {
+            @Override
+            public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
+                isLoading.setValue(false);
+                switch (response.code()){
+                    case 200:
+                        Exhibition exhibition = response.body();
+                        liveExhibitionDetails.setValue(exhibition);
+                        break;
+                    case 404:
+                        Toast.makeText(application, "Exhibition Does Not Exist", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Exhibition> call, Throwable t) {
+                isLoading.setValue(false);
+            }
+        });
+        return liveExhibitionDetails;
+    }
 
 }

@@ -38,6 +38,10 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         exhibitionsRepository.addArtworkToExhibition(exhibitionId,apiArtworkId,isLoading);
     }
 
+    public MutableLiveData<Exhibition> getExhibitionDetails(Long exhibitionId){
+        isLoading.setValue(true);
+        return exhibitionsRepository.getExhibitionDetails(exhibitionId,isLoading);
+    }
 
 
     public LiveData<Boolean> getIsLoading(){return isLoading;}
