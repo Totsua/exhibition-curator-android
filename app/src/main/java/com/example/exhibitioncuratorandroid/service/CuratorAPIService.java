@@ -1,5 +1,6 @@
 package com.example.exhibitioncuratorandroid.service;
 
+import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
@@ -26,6 +27,8 @@ public interface CuratorAPIService {
     @GET("exhibitions")
     Call<List<Exhibition>> getAllExhibitions();
 
+    @POST("exhibitions/{id}/artworks")
+    Call<Void> addArtworkToExhibition(@Path("id") Long exhibitionId, @Body ApiArtworkId artworkIdDTO);
     /*
     @DELETE("exhibitions/{id}")
     Call<Void> deleteExhibition(@Path("id") Integer id);*/
