@@ -49,6 +49,12 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         exhibitionsRepository.deleteArtworkFromExhibition(exhibitionId, apiArtworkId, isLoading,isSuccessful);
     }
 
+    public void deleteExhibition(Long exhibitionId){
+        isLoading.setValue(true);
+        isSuccessful.setValue(false);
+        exhibitionsRepository.deleteExhibition(exhibitionId,isLoading,isSuccessful);
+    }
+
     public LiveData<Boolean> getIsLoading(){return isLoading;}
 
     public LiveData<Boolean> getIsSuccessful(){return isSuccessful;}

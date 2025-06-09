@@ -192,5 +192,35 @@ public class ExhibitionsRepository {
         });
     }
 
+    public void deleteExhibition(Long exhibitionId, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful){
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Void> call = apiService.deleteExhibition(exhibitionId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                isLoading.setValue(false);
+                switch (response.code()){
+                    case 204:
+                        isSuccessful.setValue(true);
+                        Toast.makeText(application, "Exhibition Successfully Deleted", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 404:
+                        Toast.makeText(application, "Exhibition Does Not Exist", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                        Log.d("Exhibition Repository", String.valueOf(response.code()));
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                isLoading.setValue(false);
+                Log.e("RetrofitError", t.getMessage(), t);
+                Toast.makeText(application, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 }

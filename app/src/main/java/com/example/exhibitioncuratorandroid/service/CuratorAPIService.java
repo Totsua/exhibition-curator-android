@@ -37,6 +37,6 @@ public interface CuratorAPIService {
     @HTTP(method = "DELETE", path = "exhibitions/{exhibitionId}/artworks", hasBody = true)
     Call<Void> deleteArtworkFromExhibitions(@Path("exhibitionId") Long exhibitionId, @Body ApiArtworkId apiArtworkId);
 
- /*   @DELETE("exhibitions/{id}")
-    Call<Void> deleteExhibition(@Path("id") Integer id);*/
+    @DELETE("exhibitions/{id}")
+    Call<Void> deleteExhibition(@Path("id") Long id);
 }

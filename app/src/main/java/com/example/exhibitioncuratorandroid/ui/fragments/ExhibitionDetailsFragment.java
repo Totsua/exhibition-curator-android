@@ -3,6 +3,8 @@ package com.example.exhibitioncuratorandroid.ui.fragments;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
@@ -34,11 +37,14 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     private static final String ARG_PARAM1 = "param1";
     private FragmentExhibitionDetailsBinding binding;
     private Long exhibitionId;
+    private String title;
     private Exhibition currentExhibition;
     private RecyclerView recyclerView;
     private ArrayList<Artwork> artworks;
     private SearchArtworkResultsAdapter adapter;
     private ExhibitionsViewModel viewModel;
+    private boolean hasShownEmptyToast = false;
+
 
 
     private String mParam1;
@@ -60,6 +66,7 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
            exhibitionId = getArguments().getLong("ID");
+           title = getArguments().getString("TITLE");
         }
         viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
 
@@ -68,15 +75,56 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        initialiseBackButton();;
+        initialiseBackButton();
+        initialiseDeleteButton();
+        if(title != null){
+            setTitleText();
+        }
 
         getExhibitionDetails();
-
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
             if(isLoading != null){
                 binding.exhibitionsTabLoadingOverlay.setVisibility(isLoading ? VISIBLE : GONE);
             }
         });
+
+        viewModel.getIsSuccessful().observe(getViewLifecycleOwner(), isSuccessful -> {
+            if(isSuccessful){
+                getParentFragmentManager().popBackStack();
+            }
+        });
+
+    }
+
+    private void initialiseDeleteButton() {
+        binding.exhibitionDetailsDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder delete = new AlertDialog.Builder(getContext())
+                        .setTitle("Delete Exhibition")
+                                .setMessage("Are you sure you want to delete \"" + title + "\" ?")
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                viewModel.deleteExhibition(exhibitionId);
+
+                                            }
+                                        })
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                delete.show();
+
+            }
+        });
+    }
+
+    private void setTitleText() {
+        binding.exhibitionDetailsTitle.setText(title);
     }
 
     private void getExhibitionDetails() {
@@ -86,6 +134,14 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
                 currentExhibition = exhibition;
 
                     artworks = (ArrayList<Artwork>) exhibition.getArtworks();
+                    if(artworks.isEmpty()) {
+                        if (!hasShownEmptyToast) {
+                            Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+                            hasShownEmptyToast = true;
+                        }else {
+                            hasShownEmptyToast = false;
+                        }
+                    }
                     displayInRecyclerView();
             }
         });
