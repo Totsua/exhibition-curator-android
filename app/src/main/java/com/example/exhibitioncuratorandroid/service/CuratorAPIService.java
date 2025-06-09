@@ -29,6 +29,9 @@ public interface CuratorAPIService {
 
     @POST("exhibitions/{id}/artworks")
     Call<Void> addArtworkToExhibition(@Path("id") Long exhibitionId, @Body ApiArtworkId artworkIdDTO);
+
+    @GET("exhibitions/{id}")
+    Call<Exhibition> getExhibitionDetails(@Path("id") Long exhibitionId);
     /*
     @DELETE("exhibitions/{id}")
     Call<Void> deleteExhibition(@Path("id") Integer id);*/
