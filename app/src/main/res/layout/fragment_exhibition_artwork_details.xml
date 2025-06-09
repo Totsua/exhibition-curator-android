@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@android:color/holo_blue_light"
+        tools:context=".ui.fragments.ExhibitionArtworkDetailsFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/exhibitionArtworkDetailsImage"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.15"
+                />
+            <TextView
+                android:id="@+id/exhibitionArtworkDetailsArtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Artwork Name"
+                android:textSize="35sp"
+                app:layout_constraintTop_toBottomOf="@+id/exhibitionArtworkDetailsImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.04"
+                />
+
+            <TextView
+                android:id="@+id/exhibitionArtworkDetailsArtDescription"
+                android:layout_width="370dp"
+                android:layout_height="200dp"
+                android:hint="Artwork Description"
+                android:textSize="30sp"
+                android:scrollbars="vertical"
+                android:overScrollMode="ifContentScrolls"
+
+                app:layout_constraintTop_toBottomOf="@+id/exhibitionArtworkDetailsArtTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.1"
+                />
+
+            <Button
+                android:id="@+id/exhibitionArtworkDetailsArtDeleteArtworkButton"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:text="DELETE FROM EXHIBITION"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@id/exhibitionArtworkDetailsArtDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/exhibitionArtworkDetailsBackButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_back_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.04"
+                app:layout_constraintHorizontal_bias="0.01"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:id="@+id/exhibitionArtworkDetailsLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/exhibitionArtworkDetailsProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+    </FrameLayout>
+</layout>
