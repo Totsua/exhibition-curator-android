@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
 import com.example.exhibitioncuratorandroid.service.CuratorAPIService;
@@ -90,5 +91,36 @@ public class ExhibitionsRepository {
         });
         return liveExhibitionList;
     }
+
+    public void addArtworkToExhibition(Long exhibitionId, ApiArtworkId apiArtworkId, MutableLiveData<Boolean> isLoading){
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Void> call = apiService.addArtworkToExhibition(exhibitionId,apiArtworkId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                isLoading.setValue(false);
+                switch(response.code()){
+                    case 201:
+                        Toast.makeText(application, "Artwork Successfully Added", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 404:
+                        Toast.makeText(application, "No Exhibitions With Chosen ID", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 409:
+                        Toast.makeText(application, "Artwork Already In Chosen Exhibition", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Unknown Server Error", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(application, "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 }

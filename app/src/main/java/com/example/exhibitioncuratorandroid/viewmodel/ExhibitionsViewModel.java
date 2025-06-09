@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.repository.ExhibitionsRepository;
 
@@ -30,6 +31,15 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         isLoading.setValue(true);
         return exhibitionsRepository.getAllExhibitions(isLoading);
     }
+
+
+    public void addArtworkToExhibition(Long exhibitionId,ApiArtworkId apiArtworkId){
+        isLoading.setValue(true);
+        exhibitionsRepository.addArtworkToExhibition(exhibitionId,apiArtworkId,isLoading);
+    }
+
+
+
     public LiveData<Boolean> getIsLoading(){return isLoading;}
 
     public LiveData<Boolean> getIsSuccessful(){return isSuccessful;}
