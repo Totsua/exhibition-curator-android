@@ -131,6 +131,15 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
         Bundle bundle = new Bundle();
         bundle.putParcelable("EXHIBITION",exhibition);
 
+        Bundle bundle1 = new Bundle();
+        bundle1.putLong("ID",exhibition.getId());
+        bundle1.putString("TITLE",exhibition.getTitle());
+        ExhibitionDetailsFragment fragment = new ExhibitionDetailsFragment();
+        fragment.setArguments(bundle1);
 
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.homeFrameLayoutFragment,fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
