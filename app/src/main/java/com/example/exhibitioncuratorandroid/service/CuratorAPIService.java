@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -32,7 +33,10 @@ public interface CuratorAPIService {
 
     @GET("exhibitions/{id}")
     Call<Exhibition> getExhibitionDetails(@Path("id") Long exhibitionId);
-    /*
-    @DELETE("exhibitions/{id}")
+
+    @HTTP(method = "DELETE", path = "exhibitions/{exhibitionId}/artworks", hasBody = true)
+    Call<Void> deleteArtworkFromExhibitions(@Path("exhibitionId") Long exhibitionId, @Body ApiArtworkId apiArtworkId);
+
+ /*   @DELETE("exhibitions/{id}")
     Call<Void> deleteExhibition(@Path("id") Integer id);*/
 }

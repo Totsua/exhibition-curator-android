@@ -24,22 +24,24 @@ public class ExhibitionsRepository {
     private MutableLiveData<Exhibition> liveExhibitionDetails = new MutableLiveData<>();
     private Application application;
 
-    public ExhibitionsRepository(Application application){this.application = application;}
+    public ExhibitionsRepository(Application application) {
+        this.application = application;
+    }
 
-    public void createExhibition(String title, MutableLiveData<Boolean> isLoading,MutableLiveData<Boolean> isSuccessful){
+    public void createExhibition(String title, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful) {
         CuratorAPIService curatorAPIService = RetroFitInstance.getService();
         Call<Void> call = curatorAPIService.createExhibition(new ExhibitionCreateDTO(title));
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 isLoading.setValue(false);
-                switch (response.code()){
+                switch (response.code()) {
                     case 201:
                         isSuccessful.setValue(true);
                         Toast.makeText(application, "Exhibition Created", Toast.LENGTH_SHORT).show();
                         break;
                     case 404:
-                        Toast.makeText(application,"Title Already Used",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(application, "Title Already Used", Toast.LENGTH_SHORT).show();
                         break;
                     case 500:
                         Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
@@ -59,22 +61,25 @@ public class ExhibitionsRepository {
 
     }
 
-    public MutableLiveData<List<Exhibition>> getAllExhibitions(MutableLiveData<Boolean> isLoading){
+    public MutableLiveData<List<Exhibition>> getAllExhibitions(MutableLiveData<Boolean> isLoading) {
         CuratorAPIService curatorAPIService = RetroFitInstance.getService();
         Call<List<Exhibition>> call = curatorAPIService.getAllExhibitions();
         call.enqueue(new Callback<List<Exhibition>>() {
             @Override
             public void onResponse(Call<List<Exhibition>> call, Response<List<Exhibition>> response) {
                 isLoading.setValue(false);
-                switch (response.code()){
+                switch (response.code()) {
                     case 200:
                         List<Exhibition> exhibitionList = response.body();
                         liveExhibitionList.setValue(exhibitionList);
+                        if(exhibitionList.isEmpty()){
+                            Toast.makeText(application, "There are no exhibitions", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     default:
                         if (response.body() != null) {
                             Log.e("SearchArtworkRepository OkHttpClient", String.valueOf(response.code()));
-                            Log.e("SearchArtworkRepository OkHttpClient",response.body().toString());
+                            Log.e("SearchArtworkRepository OkHttpClient", response.body().toString());
                         }
 
                         liveExhibitionList.setValue(new ArrayList<>());
@@ -93,14 +98,14 @@ public class ExhibitionsRepository {
         return liveExhibitionList;
     }
 
-    public void addArtworkToExhibition(Long exhibitionId, ApiArtworkId apiArtworkId, MutableLiveData<Boolean> isLoading){
+    public void addArtworkToExhibition(Long exhibitionId, ApiArtworkId apiArtworkId, MutableLiveData<Boolean> isLoading) {
         CuratorAPIService apiService = RetroFitInstance.getService();
-        Call<Void> call = apiService.addArtworkToExhibition(exhibitionId,apiArtworkId);
+        Call<Void> call = apiService.addArtworkToExhibition(exhibitionId, apiArtworkId);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 isLoading.setValue(false);
-                switch(response.code()){
+                switch (response.code()) {
                     case 201:
                         Toast.makeText(application, "Artwork Successfully Added", Toast.LENGTH_SHORT).show();
                         break;
@@ -123,6 +128,7 @@ public class ExhibitionsRepository {
             }
         });
     }
+
     public MutableLiveData<Exhibition> getExhibitionDetails(Long exhibitionId, MutableLiveData<Boolean> isLoading) {
         CuratorAPIService apiService = RetroFitInstance.getService();
         Call<Exhibition> call = apiService.getExhibitionDetails(exhibitionId);
@@ -130,7 +136,7 @@ public class ExhibitionsRepository {
             @Override
             public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
                 isLoading.setValue(false);
-                switch (response.code()){
+                switch (response.code()) {
                     case 200:
                         Exhibition exhibition = response.body();
                         liveExhibitionDetails.setValue(exhibition);
@@ -150,5 +156,41 @@ public class ExhibitionsRepository {
         });
         return liveExhibitionDetails;
     }
+
+    public void deleteArtworkFromExhibition(Long exhibitionId, ApiArtworkId apiArtworkId,
+                                            MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful) {
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Void> call = apiService.deleteArtworkFromExhibitions(exhibitionId, apiArtworkId);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                isLoading.setValue(false);
+                switch (response.code()) {
+                    case 200:
+                    case 204:
+                        isSuccessful.setValue(true);
+                        Toast.makeText(application, "Artwork Removed Successfully", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 404:
+                        Toast.makeText(application, "Exhibition Doesn't Exist", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 400:
+                        Toast.makeText(application, "This Artwork Is Not Saved", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                isLoading.setValue(false);
+                Log.e("RetrofitError", t.getMessage(), t);
+                Toast.makeText(application, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 
 }

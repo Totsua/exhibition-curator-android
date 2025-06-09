@@ -43,6 +43,11 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         return exhibitionsRepository.getExhibitionDetails(exhibitionId,isLoading);
     }
 
+    public void deleteArtworkFromExhibition(Long exhibitionId, ApiArtworkId apiArtworkId){
+        isLoading.setValue(true);
+        isSuccessful.setValue(false);
+        exhibitionsRepository.deleteArtworkFromExhibition(exhibitionId, apiArtworkId, isLoading,isSuccessful);
+    }
 
     public LiveData<Boolean> getIsLoading(){return isLoading;}
 

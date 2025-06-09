@@ -21,6 +21,7 @@ import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
 import com.example.exhibitioncuratorandroid.adapter.SearchArtworkResultsAdapter;
 import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionDetailsBinding;
+import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
@@ -120,6 +121,19 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
     @Override
     public void onItemClick(int position) {
+       Artwork artwork = artworks.get(position);
+       ApiArtworkId apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
+
+       Bundle bundle = new Bundle();
+       bundle.putLong("ID", exhibitionId);
+       bundle.putParcelable("ARTWORK",artwork);
+
+       ExhibitionArtworkDetailsFragment fragment = new ExhibitionArtworkDetailsFragment();
+       fragment.setArguments(bundle);
+       getParentFragmentManager().beginTransaction()
+               .replace(R.id.homeFrameLayoutFragment, fragment)
+               .addToBackStack(null)
+               .commit();
 
     }
 }
