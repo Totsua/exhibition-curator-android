@@ -70,7 +70,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
 
         if (getArguments() != null) {
             searchQuery = getArguments().getString(ARG_PARAM1);
-            getSearchResults(searchQuery,1);
+            getSearchResults(searchQuery,counter);
         }
         isButtonEnabled("Prev",false);
         isButtonEnabled("Next",false);
