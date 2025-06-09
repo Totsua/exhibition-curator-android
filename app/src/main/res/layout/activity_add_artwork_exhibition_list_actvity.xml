@@ -33,7 +33,7 @@
                 android:id="@+id/addArtworkToExhibitionBackButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/ic_add"
+                android:background="@drawable/ic_back_arrow"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
