@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.service.CuratorAPIService;
 import com.example.exhibitioncuratorandroid.service.RetroFitInstance;
@@ -18,6 +19,7 @@ import retrofit2.Response;
 
 public class SearchArtworkRepository {
     private MutableLiveData<ArtworkResults> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Artwork> liveArtwork = new MutableLiveData<>();
     private Application application;
 
     public SearchArtworkRepository(Application application){this.application = application;}
@@ -60,5 +62,36 @@ public class SearchArtworkRepository {
         return mutableLiveData;
 
     }
+
+    public MutableLiveData<Artwork> getRandomMetArtwork(MutableLiveData<Boolean> isLoading){
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Artwork> call = apiService.getRandomMetArtwork();
+        call.enqueue(new Callback<Artwork>() {
+            @Override
+            public void onResponse(Call<Artwork> call, Response<Artwork> response) {
+                isLoading.setValue(false);
+                switch (response.code()){
+                    case 200:
+                        liveArtwork.setValue(response.body());
+                        break;
+                    case 416:
+                        Toast.makeText(application, "MAX ATTEMPTS TRY AGAIN", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application,"Internal Server Error", Toast.LENGTH_SHORT).show();
+                        Log.d("SearchArtwork Repository", String.valueOf(response.code()));
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Artwork> call, Throwable t) {
+                isLoading.setValue(false);
+                Toast.makeText(application, "Network Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return liveArtwork;
+    }
+
 
 }

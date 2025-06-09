@@ -1,5 +1,6 @@
 package com.example.exhibitioncuratorandroid.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -14,6 +15,7 @@ import android.widget.SearchView;
 import com.example.exhibitioncuratorandroid.ui.MainActivity;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentHomeBinding;
+import com.example.exhibitioncuratorandroid.ui.SurpriseArtworkActivity;
 import com.google.android.material.navigation.NavigationBarView;
 
 
@@ -50,6 +52,17 @@ public class HomeFragment extends Fragment {
     }
     private void initialiseButtons(){
         initialiseSearch();
+        initialiseRandomButton();
+    }
+
+    private void initialiseRandomButton() {
+        binding.homeTabRandomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SurpriseArtworkActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initialiseSearch(){

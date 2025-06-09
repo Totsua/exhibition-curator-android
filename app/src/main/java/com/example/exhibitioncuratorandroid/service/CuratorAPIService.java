@@ -1,6 +1,7 @@
 package com.example.exhibitioncuratorandroid.service;
 
 import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
+import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
@@ -21,6 +22,9 @@ public interface CuratorAPIService {
 
     @GET("search")
     Call<ArtworkResults> getArtworkSearchResults(@Query(value = "query") String query, @Query(value = "page")Integer page);
+
+    @GET("random")
+    Call<Artwork> getRandomMetArtwork();
 
     @POST("exhibitions/create")
     Call<Void> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);

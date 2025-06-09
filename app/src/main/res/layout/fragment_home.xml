@@ -54,6 +54,19 @@
             app:layout_constraintVertical_bias="0.12"
             />
 
+        <Button
+            android:id="@+id/homeTabRandomButton"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:text="Random Artwork"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/homeTabSearchButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.12"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
 </layout>

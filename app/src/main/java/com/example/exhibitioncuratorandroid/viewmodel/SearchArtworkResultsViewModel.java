@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.repository.SearchArtworkRepository;
 
@@ -22,5 +23,12 @@ public class SearchArtworkResultsViewModel extends AndroidViewModel {
         isLoading.setValue(true);
         return searchArtworkRepository.getMutableLiveData(query,page, isLoading);
     }
+
+    public MutableLiveData<Artwork> getRandomMetArtwork(){
+        isLoading.setValue(true);
+        return searchArtworkRepository.getRandomMetArtwork(isLoading);
+    }
+
+
     public LiveData<Boolean> getIsLoading(){return isLoading;}
 }
