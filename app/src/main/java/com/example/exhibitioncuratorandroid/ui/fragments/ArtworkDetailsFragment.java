@@ -17,7 +17,7 @@ import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentArtworkDetailsBinding;
 import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Artwork;
-import com.example.exhibitioncuratorandroid.ui.AddArtworkExhibitionListActvity;
+import com.example.exhibitioncuratorandroid.ui.AddArtworkExhibitionListActivity;
 
 public class ArtworkDetailsFragment extends Fragment {
 
@@ -62,7 +62,7 @@ public class ArtworkDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(currentArtwork != null) {
-                    Intent intent = new Intent(getContext(), AddArtworkExhibitionListActvity.class);
+                    Intent intent = new Intent(getContext(), AddArtworkExhibitionListActivity.class);
                     ApiArtworkId apiArtworkId = new ApiArtworkId(currentArtwork.getId(), currentArtwork.getApiOrigin());
                     intent.putExtra("ARTWORK", apiArtworkId);
                     startActivity(intent);

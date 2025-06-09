@@ -5,6 +5,7 @@ import static android.view.View.VISIBLE;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +27,7 @@ import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddArtworkExhibitionListActvity extends AppCompatActivity implements RecyclerViewInterface {
+public class AddArtworkExhibitionListActivity extends AppCompatActivity implements RecyclerViewInterface {
 
     private ArrayList<Exhibition> exhibitionsList;
     private RecyclerView recyclerView;
@@ -46,6 +47,7 @@ public class AddArtworkExhibitionListActvity extends AppCompatActivity implement
             return insets;
         });
 
+        viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
         View loadingOverlay = findViewById(R.id.addArtworkToExhibitionLoadingOverlay);
 
         viewModel.getIsLoading().observe(this, isLoading -> {
@@ -56,13 +58,20 @@ public class AddArtworkExhibitionListActvity extends AppCompatActivity implement
 
         apiArtworkId = getIntent().getParcelableExtra("ARTWORK");
 
-        viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
+
         initialiseBackButton();
         getAllExhibitions();
 
     }
 
     private void initialiseBackButton(){
+        Button button = findViewById(R.id.addArtworkToExhibitionBackButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
 
