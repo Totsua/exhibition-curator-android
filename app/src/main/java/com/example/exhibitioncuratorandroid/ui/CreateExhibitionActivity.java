@@ -40,6 +40,7 @@ public class CreateExhibitionActivity extends AppCompatActivity {
             }
         });
 
+        setBackButton();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +54,16 @@ public class CreateExhibitionActivity extends AppCompatActivity {
                 }
 
 
+            }
+        });
+    }
+
+    private void setBackButton() {
+        Button backButton = findViewById(R.id.createExhibitionBackButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
     }

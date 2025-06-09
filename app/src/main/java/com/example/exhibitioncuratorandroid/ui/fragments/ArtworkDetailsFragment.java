@@ -55,6 +55,16 @@ public class ArtworkDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setArtworkDetails();
         initialiseButton();
+        initialiseBackButton();
+    }
+
+    private void initialiseBackButton() {
+        binding.artworkDetailsBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
     }
 
     private void initialiseButton(){
