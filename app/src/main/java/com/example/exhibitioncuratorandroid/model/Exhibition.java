@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class Exhibition implements Parcelable {
+    private Long id;
     private String title;
     private String description;
     private List<Artwork> artworkList;
@@ -17,6 +18,11 @@ public class Exhibition implements Parcelable {
     }
 
     protected Exhibition(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
         title = in.readString();
         description = in.readString();
         artworkList = in.createTypedArrayList(Artwork.CREATOR);
@@ -24,6 +30,12 @@ public class Exhibition implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
         dest.writeString(title);
         dest.writeString(description);
         dest.writeTypedList(artworkList);
@@ -56,5 +68,9 @@ public class Exhibition implements Parcelable {
 
     public List<Artwork> getArtworkList() {
         return artworkList;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
