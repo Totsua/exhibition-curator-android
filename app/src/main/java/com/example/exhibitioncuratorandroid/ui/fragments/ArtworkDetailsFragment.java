@@ -1,5 +1,6 @@
 package com.example.exhibitioncuratorandroid.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -14,7 +15,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentArtworkDetailsBinding;
+import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Artwork;
+import com.example.exhibitioncuratorandroid.ui.AddArtworkExhibitionListActvity;
 
 public class ArtworkDetailsFragment extends Fragment {
 
@@ -51,8 +54,22 @@ public class ArtworkDetailsFragment extends Fragment {
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArtworkDetails();
+        initialiseButton();
     }
 
+    private void initialiseButton(){
+        binding.artworkDetailsArtSaveArtworkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currentArtwork != null) {
+                    Intent intent = new Intent(getContext(), AddArtworkExhibitionListActvity.class);
+                    ApiArtworkId apiArtworkId = new ApiArtworkId(currentArtwork.getId(), currentArtwork.getApiOrigin());
+                    intent.putExtra("ARTWORK", apiArtworkId);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
     private void setArtworkDetails() {
         binding.artworkDetailsArtTitle.setText(currentArtwork.getTitle());
         binding.artworkDetailsArtDescription.setText(currentArtwork.getDescription());
