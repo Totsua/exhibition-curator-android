@@ -9,12 +9,12 @@ public class Exhibition implements Parcelable {
     private Long id;
     private String title;
     private String description;
-    private List<Artwork> artworkList;
+    private List<Artwork> artworks;
 
-    public Exhibition(String title, String description, List<Artwork> artworkList) {
+    public Exhibition(String title, String description, List<Artwork> artworks) {
         this.title = title;
         this.description = description;
-        this.artworkList = artworkList;
+        this.artworks = artworks;
     }
 
     protected Exhibition(Parcel in) {
@@ -25,7 +25,7 @@ public class Exhibition implements Parcelable {
         }
         title = in.readString();
         description = in.readString();
-        artworkList = in.createTypedArrayList(Artwork.CREATOR);
+        artworks = in.createTypedArrayList(Artwork.CREATOR);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Exhibition implements Parcelable {
         }
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeTypedList(artworkList);
+        dest.writeTypedList(artworks);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class Exhibition implements Parcelable {
         return description;
     }
 
-    public List<Artwork> getArtworkList() {
-        return artworkList;
+    public List<Artwork> getArtworks() {
+        return artworks;
     }
 
     public Long getId() {
