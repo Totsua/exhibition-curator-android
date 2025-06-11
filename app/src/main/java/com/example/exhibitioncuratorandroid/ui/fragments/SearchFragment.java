@@ -95,8 +95,7 @@ public class SearchFragment extends Fragment implements RecyclerViewInterface {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-
-                searchQuery = searchView.getQuery().toString();
+                searchQuery = s;
                 counter = 1;
                 getSearchResults(searchQuery,counter);
                 searchView.setQuery(searchQuery,false);
