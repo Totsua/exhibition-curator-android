@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.fragments.SurpriseArtworkFragment">
+
+        <!-- Main UI Content -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@android:color/holo_blue_light"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/surpriseArtworkImage"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:scaleType="fitXY"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.15"
+                />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:layout_constraintTop_toTopOf="@id/surpriseArtworkImage"
+                app:layout_constraintBottom_toBottomOf="@id/surpriseArtworkImage"
+                app:layout_constraintStart_toStartOf="@id/surpriseArtworkImage"
+                app:layout_constraintEnd_toEndOf="@id/surpriseArtworkImage" />
+
+
+
+            <TextView
+                android:id="@+id/surpriseArtworkTitle"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:hint="Artwork Name"
+                android:textSize="25sp"
+                android:maxLines="4"
+                android:scrollbars="vertical"
+                android:overScrollMode="ifContentScrolls"
+                android:fontFamily="@font/title_font"
+                app:layout_constraintTop_toBottomOf="@+id/surpriseArtworkImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.04"
+                />
+
+            <TextView
+                android:id="@+id/surpriseArtworkDescription"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:hint="Artwork Description"
+                android:textSize="15sp"
+                android:scrollbars="vertical"
+                android:overScrollMode="ifContentScrolls"
+
+                app:layout_constraintTop_toBottomOf="@+id/surpriseArtworkTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.1"
+                />
+
+            <Button
+                android:id="@+id/surpriseArtworkSaveArtworkButton"
+                android:layout_width="180dp"
+                android:layout_height="80dp"
+                android:text="Save Art To An Exhibition"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/surpriseArtworkDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/surpriseArtworkBackButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/ic_back_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.04"
+                app:layout_constraintHorizontal_bias="0.01"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/surpriseArtworkLoadingOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80000000"
+            android:visibility="gone"
+            android:clickable="true"
+            android:focusable="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/surpriseArtworkProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+
+    </FrameLayout>
+</layout>

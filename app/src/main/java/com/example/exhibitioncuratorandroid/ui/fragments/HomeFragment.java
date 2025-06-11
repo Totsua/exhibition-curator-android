@@ -59,8 +59,15 @@ public class HomeFragment extends Fragment {
         binding.homeTabRandomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), SurpriseArtworkActivity.class);
-                startActivity(intent);
+                SurpriseArtworkFragment fragment = new SurpriseArtworkFragment();
+
+                getParentFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.homeFrameLayoutFragment,fragment)
+                        .commit();
+
+//                Intent intent = new Intent(getContext(), SurpriseArtworkActivity.class);
+//                startActivity(intent);
             }
         });
     }
