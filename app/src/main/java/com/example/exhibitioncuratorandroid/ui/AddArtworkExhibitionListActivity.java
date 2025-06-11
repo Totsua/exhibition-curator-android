@@ -3,11 +3,14 @@ package com.example.exhibitioncuratorandroid.ui;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,8 +36,8 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
     private RecyclerView recyclerView;
     private ExhibitionsViewModel viewModel;
     private ExhibitionListAdapter adapter;
-
     private ApiArtworkId apiArtworkId;
+    private ActivityResultLauncher<Intent> backendRequestLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +61,36 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
 
         apiArtworkId = getIntent().getParcelableExtra("ARTWORK");
 
+        backendRequestLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if(result.getResultCode() == CreateExhibitionActivity.RESULT_OK){
+                        viewModel.getAllExhibitions();
+                    }
+                }
+        );
 
-        initialiseBackButton();
+        initialiseButtons();
         getAllExhibitions();
 
     }
+
+    private void initialiseButtons(){
+        initialiseBackButton();
+        initialiseAddButton();
+    }
+
+    private void initialiseAddButton(){
+        Button button = findViewById(R.id.addArtworkToExhibitionAddButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CreateExhibitionActivity.class);
+                backendRequestLauncher.launch(intent);
+            }
+        });
+    }
+
 
     private void initialiseBackButton(){
         Button button = findViewById(R.id.addArtworkToExhibitionBackButton);
