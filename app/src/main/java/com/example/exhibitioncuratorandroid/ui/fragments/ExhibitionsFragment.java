@@ -45,22 +45,10 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
         // Required empty public constructor
     }
 
-    /*public static ExhibitionsFragment newInstance(String param1, String param2) {
-        ExhibitionsFragment fragment = new ExhibitionsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }*/
         viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
     }
 
