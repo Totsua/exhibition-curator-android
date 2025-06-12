@@ -6,7 +6,7 @@
     >
 
 <FrameLayout
-    android:background="@android:color/holo_blue_light"
+    android:background="@drawable/custom_color_1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ExhibitionDetailsFragment"
@@ -24,6 +24,7 @@
             android:layout_marginTop="20dp"
             android:text="Exhibition"
             android:textSize="40sp"
+            android:textColor="@color/black"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@android:color/holo_blue_light"
+        android:background="@drawable/custom_color_1"
         tools:context=".ui.fragments.ExhibitionArtworkDetailsFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Artwork Name"
+                android:textColor="@color/black"
                 android:textSize="35sp"
                 app:layout_constraintTop_toBottomOf="@+id/exhibitionArtworkDetailsImage"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -41,6 +42,7 @@
                 android:layout_width="370dp"
                 android:layout_height="200dp"
                 android:hint="Artwork Description"
+                android:textColor="@color/black"
                 android:textSize="30sp"
                 android:scrollbars="vertical"
                 android:overScrollMode="ifContentScrolls"
@@ -52,12 +54,14 @@
                 app:layout_constraintVertical_bias="0.1"
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/exhibitionArtworkDetailsArtDeleteArtworkButton"
+                android:background="@drawable/custom_button_background"
                 android:layout_width="180dp"
                 android:layout_height="80dp"
                 android:text="DELETE FROM EXHIBITION"
-                android:textSize="15sp"
+                android:textSize="20sp"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/exhibitionArtworkDetailsArtDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
