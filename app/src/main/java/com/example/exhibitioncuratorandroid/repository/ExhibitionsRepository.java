@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
+import com.example.exhibitioncuratorandroid.model.ExhibitionPatchDTO;
 import com.example.exhibitioncuratorandroid.service.CuratorAPIService;
 import com.example.exhibitioncuratorandroid.service.RetroFitInstance;
 
@@ -158,7 +159,7 @@ public class ExhibitionsRepository {
     }
 
     public void deleteArtworkFromExhibition(Long exhibitionId, ApiArtworkId apiArtworkId,
-                                            MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful) {
+                                            MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isDeleted) {
         CuratorAPIService apiService = RetroFitInstance.getService();
         Call<Void> call = apiService.deleteArtworkFromExhibitions(exhibitionId, apiArtworkId);
         call.enqueue(new Callback<Void>() {
@@ -168,7 +169,7 @@ public class ExhibitionsRepository {
                 switch (response.code()) {
                     case 200:
                     case 204:
-                        isSuccessful.setValue(true);
+                        isDeleted.setValue(true);
                         Toast.makeText(application, "Artwork Removed Successfully", Toast.LENGTH_SHORT).show();
                         break;
                     case 404:
@@ -192,7 +193,7 @@ public class ExhibitionsRepository {
         });
     }
 
-    public void deleteExhibition(Long exhibitionId, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful){
+    public void deleteExhibition(Long exhibitionId, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isDeleted){
         CuratorAPIService apiService = RetroFitInstance.getService();
         Call<Void> call = apiService.deleteExhibition(exhibitionId);
         call.enqueue(new Callback<Void>() {
@@ -201,7 +202,7 @@ public class ExhibitionsRepository {
                 isLoading.setValue(false);
                 switch (response.code()){
                     case 204:
-                        isSuccessful.setValue(true);
+                        isDeleted.setValue(true);
                         Toast.makeText(application, "Exhibition Successfully Deleted", Toast.LENGTH_SHORT).show();
                         break;
                     case 404:
@@ -217,6 +218,37 @@ public class ExhibitionsRepository {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 isLoading.setValue(false);
+                Log.e("RetrofitError", t.getMessage(), t);
+                Toast.makeText(application, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void updateExhibition(Long exhibitionId, ExhibitionPatchDTO exhibition, MutableLiveData<Boolean> isloading, MutableLiveData<Boolean> isSuccessful){
+        CuratorAPIService apiService = RetroFitInstance.getService();
+        Call<Exhibition> call = apiService.updateExhibition(exhibitionId, exhibition);
+        call.enqueue(new Callback<Exhibition>() {
+            @Override
+            public void onResponse(Call<Exhibition> call, Response<Exhibition> response) {
+                isloading.setValue(false);
+                switch (response.code()){
+                    case 200:
+                        isSuccessful.setValue(true);
+                        Toast.makeText(application, "Update Successful", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 404:
+                        Toast.makeText(application, "Exhibition Does Not Exist", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(application, "Internal Server Error", Toast.LENGTH_SHORT).show();
+                        Log.d("Exhibition Repository", String.valueOf(response.code()));
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Exhibition> call, Throwable t) {
+                isloading.setValue(false);
                 Log.e("RetrofitError", t.getMessage(), t);
                 Toast.makeText(application, "Network Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }

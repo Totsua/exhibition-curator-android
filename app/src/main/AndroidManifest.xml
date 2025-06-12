@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ExhibitionCuratorAndroid"
         tools:targetApi="31">
         <activity
+            android:name=".ui.UpdateExhibitionActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.SurpriseArtworkActivity"
             android:exported="false" />
         <activity

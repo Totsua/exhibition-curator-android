@@ -3,10 +3,11 @@ package com.example.exhibitioncuratorandroid.ui.fragments;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -24,9 +25,9 @@ import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
 import com.example.exhibitioncuratorandroid.adapter.SearchArtworkResultsAdapter;
 import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionDetailsBinding;
-import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.ui.UpdateExhibitionActivity;
 import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
 
 import java.util.ArrayList;
@@ -45,28 +46,18 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     private ExhibitionsViewModel viewModel;
     private boolean hasShownEmptyToast = false;
 
+    private ActivityResultLauncher<Intent> backendRequestLauncher;
 
-
-    private String mParam1;
 
     public ExhibitionDetailsFragment() {
         // Required empty public constructor
     }
-
-//    public static ExhibitionDetailsFragment newInstance(String param1, String param2) {
-//        ExhibitionDetailsFragment fragment = new ExhibitionDetailsFragment();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
            exhibitionId = getArguments().getLong("ID");
-           title = getArguments().getString("TITLE");
         }
         viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
 
@@ -76,52 +67,47 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         initialiseBackButton();
-        initialiseDeleteButton();
+        initialiseEditButton();
         if(title != null){
             setTitleText();
         }
 
         getExhibitionDetails();
+
+
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
             if(isLoading != null){
                 binding.exhibitionsTabLoadingOverlay.setVisibility(isLoading ? VISIBLE : GONE);
             }
         });
 
-        viewModel.getIsSuccessful().observe(getViewLifecycleOwner(), isSuccessful -> {
-            if(isSuccessful){
-                getParentFragmentManager().popBackStack();
-            }
-        });
+        backendRequestLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Log.e("EXHIBITION DETAILS", String.valueOf(result.getResultCode()));
+                    if(result.getResultCode() == UpdateExhibitionActivity.RESULT_UPDATE_FRAGMENT){
+                        Log.e("EXHIBITION DETAILS", "UPDATING UPDATING UPDATING");
+                        getExhibitionDetails();
+                    } else if (result.getResultCode() == UpdateExhibitionActivity.RESULT_CLOSE_FRAGMENT) {
+                        getParentFragmentManager().popBackStack();
+                    }
+                }
+        );
+
 
     }
 
-    private void initialiseDeleteButton() {
-        binding.exhibitionDetailsDeleteButton.setOnClickListener(new View.OnClickListener() {
+    private void initialiseEditButton() {
+        binding.exhibitionDetailsEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder delete = new AlertDialog.Builder(getContext())
-                        .setTitle("Delete Exhibition")
-                                .setMessage("Are you sure you want to delete \"" + title + "\" ?")
-                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                viewModel.deleteExhibition(exhibitionId);
-
-                                            }
-                                        })
-                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });
-                delete.show();
-
+                Intent intent = new Intent(getContext(), UpdateExhibitionActivity.class);
+                intent.putExtra("ID", currentExhibition.getId());
+                backendRequestLauncher.launch(intent);
             }
         });
     }
+
 
     private void setTitleText() {
         binding.exhibitionDetailsTitle.setText(title);
@@ -142,6 +128,8 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
                             hasShownEmptyToast = false;
                         }
                     }
+                    title = currentExhibition.getTitle();
+                    setTitleText();
                     displayInRecyclerView();
             }
         });
@@ -178,7 +166,7 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     @Override
     public void onItemClick(int position) {
        Artwork artwork = artworks.get(position);
-       ApiArtworkId apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
+//       ApiArtworkId apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
 
        Bundle bundle = new Bundle();
        bundle.putLong("ID", exhibitionId);

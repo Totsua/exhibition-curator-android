@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.model.ExhibitionPatchDTO;
 import com.example.exhibitioncuratorandroid.repository.ExhibitionsRepository;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ExhibitionsViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isSuccessful = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isDeleted = new MutableLiveData<>();
     private ExhibitionsRepository exhibitionsRepository;
 
     public ExhibitionsViewModel(@NonNull Application application) {
@@ -45,17 +47,24 @@ public class ExhibitionsViewModel extends AndroidViewModel {
 
     public void deleteArtworkFromExhibition(Long exhibitionId, ApiArtworkId apiArtworkId){
         isLoading.setValue(true);
-        isSuccessful.setValue(false);
-        exhibitionsRepository.deleteArtworkFromExhibition(exhibitionId, apiArtworkId, isLoading,isSuccessful);
+        isDeleted.setValue(false);
+        exhibitionsRepository.deleteArtworkFromExhibition(exhibitionId, apiArtworkId, isLoading,isDeleted);
     }
 
     public void deleteExhibition(Long exhibitionId){
         isLoading.setValue(true);
+        isDeleted.setValue(false);
+        exhibitionsRepository.deleteExhibition(exhibitionId,isLoading,isDeleted);
+    }
+
+    public void updateExhibition(Long exhibitionId, ExhibitionPatchDTO exhibitionPatchDTO){
+        isLoading.setValue(true);
         isSuccessful.setValue(false);
-        exhibitionsRepository.deleteExhibition(exhibitionId,isLoading,isSuccessful);
+        exhibitionsRepository.updateExhibition(exhibitionId,exhibitionPatchDTO ,isLoading,isSuccessful);
     }
 
     public LiveData<Boolean> getIsLoading(){return isLoading;}
 
     public LiveData<Boolean> getIsSuccessful(){return isSuccessful;}
+    public LiveData<Boolean> getIsDeleted(){return isDeleted;}
 }

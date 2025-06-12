@@ -5,6 +5,7 @@ import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
+import com.example.exhibitioncuratorandroid.model.ExhibitionPatchDTO;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -28,6 +30,9 @@ public interface CuratorAPIService {
 
     @POST("exhibitions/create")
     Call<Void> createExhibition(@Body ExhibitionCreateDTO exhibitionCreateDTO);
+
+    @PATCH("exhibitions/{id}")
+    Call<Exhibition> updateExhibition(@Path("id") Long exhibitionId, @Body ExhibitionPatchDTO exhibition);
 
     @GET("exhibitions")
     Call<List<Exhibition>> getAllExhibitions();
