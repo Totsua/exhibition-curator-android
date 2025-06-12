@@ -1,12 +1,12 @@
 package com.example.exhibitioncuratorandroid.model;
 
 public class ExhibitionPatchDTO {
-    private String Title;
-    private String Description;
+    private String title;
+    private String description;
 
     public ExhibitionPatchDTO(String title, String description) {
-        Title = title;
-        Description = description;
+        this.title = title;
+        this.description = description;
     }
 
     public ExhibitionPatchDTO() {
@@ -14,18 +14,18 @@ public class ExhibitionPatchDTO {
 
 
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public void setTitle(String title) {
-        Title = title;
+        this.title = title;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 }
