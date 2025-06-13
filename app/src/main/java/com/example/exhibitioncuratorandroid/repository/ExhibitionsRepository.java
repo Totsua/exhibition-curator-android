@@ -29,9 +29,9 @@ public class ExhibitionsRepository {
         this.application = application;
     }
 
-    public void createExhibition(String title, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful) {
+    public void createExhibition(ExhibitionCreateDTO exhibitionCreateDTO, MutableLiveData<Boolean> isLoading, MutableLiveData<Boolean> isSuccessful) {
         CuratorAPIService curatorAPIService = RetroFitInstance.getService();
-        Call<Void> call = curatorAPIService.createExhibition(new ExhibitionCreateDTO(title));
+        Call<Void> call = curatorAPIService.createExhibition(exhibitionCreateDTO);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.exhibitioncuratorandroid.R;
+import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
 import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
 
 public class CreateExhibitionActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class CreateExhibitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_exhibition);
         viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
         EditText editText = findViewById(R.id.createExhibitionEditText);
+        EditText descriptionText = findViewById(R.id.createExhibitionDescriptionEditBox);
         Button button = findViewById(R.id.createExhibitionButton);
         View loadingOverlay = findViewById(R.id.createExhibitionLoadingOverlay);
 
@@ -45,14 +47,35 @@ public class CreateExhibitionActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = editText.getText().toString();
-                if(isValidName(text)){
-                    createExhibition(text);
+                String title = editText.getText().toString().trim();
+                String description = descriptionText.getText().toString().trim();
+
+
+                //todo: extract validation logic to own method
+                boolean isValid = true;
+
+                ExhibitionCreateDTO createDTO = new ExhibitionCreateDTO();
+
+                if(isValidName(title)){
+                    createDTO.setTitle(title);
                 }
                 else {
                     editText.setError("Name must be 1–80 characters and not blank");
+                    isValid = false;
                 }
 
+                if(isValidDescription(description)){
+                    if(!description.isEmpty()){
+                        createDTO.setDescription(description);
+                    }
+                }else {
+                    descriptionText.setError("Description must be less than 500 characters");
+                    isValid = false;
+                }
+
+                if(isValid){
+                    createExhibition(createDTO);
+                }
 
             }
         });
@@ -69,13 +92,20 @@ public class CreateExhibitionActivity extends AppCompatActivity {
     }
 
 
-    private void createExhibition(String text) {
-        viewModel.createExhibition(text);
+    private void createExhibition(ExhibitionCreateDTO createDTO) {
+        viewModel.createExhibition(createDTO);
     }
+
     private boolean isValidName(String input) {
         return input != null
-                && !input.trim().isEmpty()
+                && !input.isEmpty()
                 && input.length() >= 1
                 && input.length() <= 80;
     }
+
+    private boolean isValidDescription(String input){
+        return input.isEmpty() || input.length() <= 500;
+    }
+
+
 }
