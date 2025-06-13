@@ -108,6 +108,8 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
             @Override
             public void onChanged(List<Exhibition> exhibitions) {
                 exhibitionsList = (ArrayList<Exhibition>) exhibitions;
+                View recyclerOverlay = findViewById(R.id.addArtworkToExhibitionRecyclerOverlay);
+                recyclerOverlay.setVisibility(exhibitionsList.isEmpty() ? VISIBLE : GONE);
                 displayInRecyclerView();
             }
         });

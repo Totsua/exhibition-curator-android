@@ -91,6 +91,7 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
             @Override
             public void onChanged(List<Exhibition> exhibitions) {
                 exhibitionsList = (ArrayList<Exhibition>) exhibitions;
+                binding.exhibitionsTabRecyclerOverlay.setVisibility(exhibitionsList.isEmpty() ? VISIBLE : GONE);
                 displayInRecyclerView();
             }
         });

@@ -162,10 +162,13 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
                 if(artworks.isEmpty()) {
                     if (!hasShownEmptyToast) {
-                        Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+                        binding.exhibitionRecyclerOverlay.setVisibility(VISIBLE);
                         hasShownEmptyToast = true;
                     }else {
                         hasShownEmptyToast = false;
+                        binding.exhibitionRecyclerOverlay.setVisibility(GONE);
+
                     }
                 }
 
