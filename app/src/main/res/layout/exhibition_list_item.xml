@@ -42,7 +42,7 @@
                 android:layout_height="50dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:hint="Exhibition Description"
+                android:hint="No Description"
                 android:text="@{exhibition.description}"
                 android:textSize="17sp"
                 android:maxLines="1"
