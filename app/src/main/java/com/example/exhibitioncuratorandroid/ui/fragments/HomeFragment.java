@@ -1,6 +1,5 @@
 package com.example.exhibitioncuratorandroid.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -15,14 +14,11 @@ import android.widget.SearchView;
 import com.example.exhibitioncuratorandroid.ui.MainActivity;
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.FragmentHomeBinding;
-import com.example.exhibitioncuratorandroid.ui.SurpriseArtworkActivity;
 import com.google.android.material.navigation.NavigationBarView;
 
 
 public class HomeFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
 
-    private String mParam1;
     FragmentHomeBinding binding;
 
     public HomeFragment() {
@@ -32,7 +28,6 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,9 +35,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-        }
     }
 
     @Override
@@ -52,6 +44,7 @@ public class HomeFragment extends Fragment {
     }
     private void initialiseButtons(){
         initialiseSearch();
+        initialiseSearchButton();
         initialiseRandomButton();
     }
 
@@ -66,38 +59,53 @@ public class HomeFragment extends Fragment {
                         .replace(R.id.homeFrameLayoutFragment,fragment)
                         .commit();
 
-//                Intent intent = new Intent(getContext(), SurpriseArtworkActivity.class);
-//                startActivity(intent);
             }
+        });
+    }
+
+    private void initialiseSearchButton() {
+        Button searchButton = binding.homeTabSearchButton;
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveToSearchTab();
+            }
+
         });
     }
 
     private void initialiseSearch(){
         SearchView searchView = binding.homeTabSearchView;
         searchView.clearFocus();
-
-        Button searchButton = binding.homeTabSearchButton;
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View view) {
-                String query = searchView.getQuery().toString();
-                SearchFragment searchFragment = SearchFragment.newInstance(query);
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.homeFrameLayoutFragment,searchFragment)
-                        .commit();
-
-                NavigationBarView nav = getActivity().findViewById(R.id.BottomNavView);
-                nav.setOnItemSelectedListener(null);
-                nav.setSelectedItemId(R.id.search); // Update UI highlight only
-                nav.setOnItemSelectedListener((MainActivity) getActivity());
-
+            public boolean onQueryTextSubmit(String s) {
+                moveToSearchTab();
+                return true;
             }
 
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
         });
 
+    }
 
+    private void moveToSearchTab(){
+        SearchView searchView = binding.homeTabSearchView;
+        String query = searchView.getQuery().toString();
+        SearchFragment searchFragment = SearchFragment.newInstance(query);
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeFrameLayoutFragment,searchFragment)
+                .commit();
+
+        NavigationBarView nav = getActivity().findViewById(R.id.BottomNavView);
+        nav.setOnItemSelectedListener(null);
+        nav.setSelectedItemId(R.id.search); // Update Navbar UI highlight
+        nav.setOnItemSelectedListener((MainActivity) getActivity());
     }
 
     @Override
