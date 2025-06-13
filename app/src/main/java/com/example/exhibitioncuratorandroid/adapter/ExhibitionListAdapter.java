@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.databinding.ExhibitionListItemBinding;
+import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExhibitionListAdapter extends RecyclerView.Adapter<ExhibitionListAdapter.ExhibitionListViewHolder> {
@@ -48,6 +50,11 @@ public class ExhibitionListAdapter extends RecyclerView.Adapter<ExhibitionListAd
     @Override
     public int getItemCount() {
         return exhibitionList.size();
+    }
+
+    public void setFilterList(ArrayList<Exhibition> filterList){
+        this.exhibitionList = filterList;
+        notifyDataSetChanged();
     }
 
 
