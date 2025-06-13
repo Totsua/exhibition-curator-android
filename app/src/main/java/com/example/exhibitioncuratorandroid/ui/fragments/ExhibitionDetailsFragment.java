@@ -35,8 +35,6 @@ import java.util.ArrayList;
 
 public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewInterface {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
     private FragmentExhibitionDetailsBinding binding;
     private Long exhibitionId;
     private String title;
@@ -148,17 +146,25 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
                 currentExhibition = exhibition;
 
                     artworks = (ArrayList<Artwork>) exhibition.getArtworks();
-                    displayedList = artworks;
-                    if(artworks.isEmpty()) {
-                        if (!hasShownEmptyToast) {
-                            Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
-                            hasShownEmptyToast = true;
-                        }else {
-                            hasShownEmptyToast = false;
-                        }
+
+                if(artworks.isEmpty()) {
+                    if (!hasShownEmptyToast) {
+                        Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+                        hasShownEmptyToast = true;
+                    }else {
+                        hasShownEmptyToast = false;
                     }
-                    title = currentExhibition.getTitle();
-                    setTitleText();
+                }
+
+                title = currentExhibition.getTitle();
+                setTitleText();
+
+                if(!currentQuery.isEmpty()){
+                    binding.exhibitionDetailsSearchView.setQuery(currentQuery,false);
+                    displayedList = getFilteredList(currentQuery);
+                }else{
+                    displayedList = artworks;
+                }
                     displayInRecyclerView();
             }
         });
@@ -166,8 +172,16 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     }
 
     private void filterList(String query){
-        if(artworks.isEmpty()){return;}
+        currentQuery = query;
+        if(artworks.isEmpty() || adapter == null){return;}
 
+        filteredList = getFilteredList(query);
+
+        displayedList = filteredList;
+        adapter.setFilterList(displayedList);
+    }
+
+    private ArrayList<Artwork> getFilteredList(String query){
         filteredList = new ArrayList<>();
         String lowerQuery = query.toLowerCase();
         for(Artwork artwork: artworks){
@@ -176,15 +190,7 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
                 filteredList.add(artwork);
             }
         }
-
-        displayedList = filteredList;
-        adapter.setFilterList(displayedList);
-//
-//        if(filteredList.isEmpty()){
-//            Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
-//        }else {
-//            adapter.setFilterList(filteredList);
-//        }
+        return filteredList;
     }
 
     private void displayInRecyclerView(){
