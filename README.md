@@ -20,6 +20,10 @@ The app relies on the [Exhibition Curator Backend API](https://github.com/Totsua
 - **Android SDK**:  MIN: 28, TARGET: 35
 - **Build System**: Gradle Wrapper
 
+# Requirements
+- Java 11 or higher installed
+- Android Studio (Ladybug Feature Drop 2024.2.2 or higher)
+- Android device with sdk higher than 27 (optional)
 
 # Dependencies
 - RetroFit 2.9
