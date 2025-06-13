@@ -26,14 +26,32 @@
             android:textSize="32sp"
             android:textColor="@color/black"
             android:gravity="center"
-            android:maxLines="4"
+            android:maxLines="3"
             android:scrollbars="vertical"
             android:overScrollMode="ifContentScrolls"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0" />
+            app:layout_constraintVertical_bias="0.005" />
+
+
+        <TextView
+            android:id="@+id/exhibitionDetailsDescription"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:overScrollMode="ifContentScrolls"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exhibitionDetailsTitle"
+            app:layout_constraintVertical_bias="0.04"
+            />
 
         <SearchView
             android:id="@+id/exhibitionDetailsSearchView"
@@ -45,7 +63,7 @@
             android:queryHint="Search Artwork or Artist..."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exhibitionDetailsTitle"
+            app:layout_constraintTop_toBottomOf="@+id/exhibitionDetailsDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0" />
 
@@ -55,6 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
+            android:requiresFadingEdge="vertical"
             app:layout_constraintTop_toBottomOf="@+id/exhibitionDetailsSearchView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,8 +83,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/exhibitionDetailsBackButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/ic_back_arrow"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -84,13 +103,46 @@
             android:background="@drawable/ic_edit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.03"
+            app:layout_constraintTop_toTopOf="@+id/exhibitionDetailsBackButton"
+            app:layout_constraintBottom_toBottomOf="@+id/exhibitionDetailsBackButton"
             app:layout_constraintHorizontal_bias="0.98"
             />
-
-
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/exhibitionRecyclerOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/exhibitionDetailsRecyclerView"
+            app:layout_constraintEnd_toEndOf="@+id/exhibitionDetailsRecyclerView"
+            app:layout_constraintTop_toTopOf="@+id/exhibitionDetailsRecyclerView"
+            android:visibility="gone"
+            >
+            
+            <ImageView
+                android:id="@+id/exhibitionDetailsEmptyListImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_exhibition"
+                />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/exhibitionDetailsEmptyListImage"
+                app:layout_constraintEnd_toEndOf="@id/exhibitionDetailsEmptyListImage"
+                app:layout_constraintTop_toBottomOf="@+id/exhibitionDetailsEmptyListImage"
+                android:text="No Artworks In This Exhibition"
+                android:textSize="30sp"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout

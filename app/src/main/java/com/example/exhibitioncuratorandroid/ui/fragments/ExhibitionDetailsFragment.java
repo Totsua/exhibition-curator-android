@@ -38,7 +38,6 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
     private FragmentExhibitionDetailsBinding binding;
     private Long exhibitionId;
-    private String title;
     private Exhibition currentExhibition;
     private RecyclerView recyclerView;
     private ArrayList<Artwork> artworks = new ArrayList<>();
@@ -72,9 +71,7 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
         initialiseBackButton();
         initialiseEditButton();
         initialiseSearchBar();
-        if(title != null){
-            setTitleText();
-        }
+
 
 
 
@@ -136,9 +133,23 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
         });
     }
 
+    private void setTextViews(){
+        setTitleText();
+        setDescriptionText();
+    }
+
     private void setTitleText() {
         binding.exhibitionDetailsTitle.setMovementMethod(new ScrollingMovementMethod());
-        binding.exhibitionDetailsTitle.setText(title);
+        binding.exhibitionDetailsTitle.setText(currentExhibition.getTitle());
+    }
+
+    private void setDescriptionText(){
+        binding.exhibitionDetailsDescription.setMovementMethod(new ScrollingMovementMethod());
+        if(currentExhibition.getDescription() == null || currentExhibition.getDescription().isEmpty()){
+            binding.exhibitionDetailsDescription.setText("There is no description for this exhibition");
+        }else {
+            binding.exhibitionDetailsDescription.setText(currentExhibition.getDescription());
+        }
     }
 
     private void getExhibitionDetails() {
@@ -151,15 +162,17 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
                 if(artworks.isEmpty()) {
                     if (!hasShownEmptyToast) {
-                        Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+                        binding.exhibitionRecyclerOverlay.setVisibility(VISIBLE);
                         hasShownEmptyToast = true;
                     }else {
                         hasShownEmptyToast = false;
+                        binding.exhibitionRecyclerOverlay.setVisibility(GONE);
+
                     }
                 }
 
-                title = currentExhibition.getTitle();
-                setTitleText();
+                setTextViews();
 
                 if(!currentQuery.isEmpty()){
                     binding.exhibitionDetailsSearchView.setQuery(currentQuery,false);

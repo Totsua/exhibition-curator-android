@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -36,6 +37,10 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
     private RecyclerView recyclerView;
     private ExhibitionsViewModel viewModel;
     private ExhibitionListAdapter adapter;
+    private ArrayList<Exhibition> filteredList;
+    private ArrayList<Exhibition> displayedList;
+    private String currentQuery = "";
+
     private ApiArtworkId apiArtworkId;
     private ActivityResultLauncher<Intent> backendRequestLauncher;
 
@@ -78,7 +83,49 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
     private void initialiseButtons(){
         initialiseBackButton();
         initialiseAddButton();
+        initialiseSearchBar();
     }
+
+    private void initialiseSearchBar(){
+       SearchView searchView = findViewById(R.id.addArtworkToExhibitionSearchView);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                filterList(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterList(s);
+                return true;
+            }
+        });
+    }
+
+    private void filterList(String query){
+        currentQuery = query;
+        if(exhibitionsList.isEmpty() || adapter == null){return;}
+
+        filteredList = getFilteredList(query);
+
+        displayedList = filteredList;
+        adapter.setFilterList(displayedList);
+    }
+
+
+    private ArrayList<Exhibition> getFilteredList(String query){
+        filteredList = new ArrayList<>();
+        String lowerQuery = query.toLowerCase();
+        for(Exhibition exhibition: exhibitionsList){
+            if(exhibition.getTitle().toLowerCase().contains(lowerQuery)){
+                filteredList.add(exhibition);
+            }
+        }
+        return filteredList;
+    }
+
 
     private void initialiseAddButton(){
         Button button = findViewById(R.id.addArtworkToExhibitionAddButton);
@@ -108,6 +155,18 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
             @Override
             public void onChanged(List<Exhibition> exhibitions) {
                 exhibitionsList = (ArrayList<Exhibition>) exhibitions;
+                View recyclerOverlay = findViewById(R.id.addArtworkToExhibitionRecyclerOverlay);
+                recyclerOverlay.setVisibility(exhibitionsList.isEmpty() ? VISIBLE : GONE);
+
+                if(!currentQuery.isEmpty()){
+                    SearchView searchView = findViewById(R.id.addArtworkToExhibitionSearchView);
+                    searchView.setQuery(currentQuery,false);
+                    displayedList = getFilteredList(currentQuery);
+                }else{
+                    displayedList = exhibitionsList;
+                }
+
+
                 displayInRecyclerView();
             }
         });
@@ -116,7 +175,7 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
 
     private void displayInRecyclerView(){
         recyclerView = findViewById(R.id.addArtworkToExhibitionRecyclerView);
-        adapter = new ExhibitionListAdapter(exhibitionsList,this,this);
+        adapter = new ExhibitionListAdapter(displayedList,this,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.hasFixedSize();
@@ -125,7 +184,7 @@ public class AddArtworkExhibitionListActivity extends AppCompatActivity implemen
 
     @Override
     public void onItemClick(int position) {
-        Long exhibitionId = exhibitionsList.get(position).getId();
+        Long exhibitionId = displayedList.get(position).getId();
         viewModel.addArtworkToExhibition(exhibitionId,apiArtworkId);
     }
 }

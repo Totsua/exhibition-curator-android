@@ -18,11 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.exhibitioncuratorandroid.R;
 import com.example.exhibitioncuratorandroid.adapter.ExhibitionListAdapter;
 import com.example.exhibitioncuratorandroid.adapter.RecyclerViewInterface;
 import com.example.exhibitioncuratorandroid.databinding.FragmentExhibitionsBinding;
+import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
 import com.example.exhibitioncuratorandroid.ui.CreateExhibitionActivity;
 import com.example.exhibitioncuratorandroid.viewmodel.ExhibitionsViewModel;
@@ -36,6 +38,9 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
     private ExhibitionsViewModel viewModel;
     private RecyclerView recyclerView;
     private ArrayList<Exhibition> exhibitionsList;
+    private ArrayList<Exhibition> filteredList;
+    private ArrayList<Exhibition> displayedList;
+    private String currentQuery = "";
     private ExhibitionListAdapter adapter;
 
     private ActivityResultLauncher<Intent> backendRequestLauncher;
@@ -67,9 +72,26 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
 
         initialiseButtons();
         getAllExhibitions();
+        initialiseSearchBar();
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
             if(isLoading != null){
                 binding.exhibitionsTabLoadingOverlay.setVisibility(isLoading ? VISIBLE : GONE);
+            }
+        });
+    }
+
+    private void initialiseSearchBar(){
+        binding.exhibitionsTabSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                filterList(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterList(s);
+                return true;
             }
         });
     }
@@ -85,12 +107,43 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
         });
     }
 
+    private void filterList(String query){
+        currentQuery = query;
+        if(exhibitionsList.isEmpty() || adapter == null){return;}
+
+        filteredList = getFilteredList(query);
+
+        displayedList = filteredList;
+        adapter.setFilterList(displayedList);
+    }
+
+
+    private ArrayList<Exhibition> getFilteredList(String query){
+        filteredList = new ArrayList<>();
+        String lowerQuery = query.toLowerCase();
+        for(Exhibition exhibition: exhibitionsList){
+            if(exhibition.getTitle().toLowerCase().contains(lowerQuery)){
+                filteredList.add(exhibition);
+            }
+        }
+        return filteredList;
+    }
+
 
     private void getAllExhibitions(){
         viewModel.getAllExhibitions().observe(getViewLifecycleOwner(), new Observer<List<Exhibition>>() {
             @Override
             public void onChanged(List<Exhibition> exhibitions) {
                 exhibitionsList = (ArrayList<Exhibition>) exhibitions;
+                binding.exhibitionsTabRecyclerOverlay.setVisibility(exhibitionsList.isEmpty() ? VISIBLE : GONE);
+
+                if(!currentQuery.isEmpty()){
+                    binding.exhibitionsTabSearchView.setQuery(currentQuery,false);
+                    displayedList = getFilteredList(currentQuery);
+                }else{
+                    displayedList = exhibitionsList;
+                }
+
                 displayInRecyclerView();
             }
         });
@@ -98,7 +151,7 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
 
     public void displayInRecyclerView(){
         recyclerView = binding.exhibitionsTabRecyclerView;
-        adapter = new ExhibitionListAdapter(exhibitionsList,this,this.getContext());
+        adapter = new ExhibitionListAdapter(displayedList,this,this.getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
@@ -115,13 +168,11 @@ public class ExhibitionsFragment extends Fragment implements RecyclerViewInterfa
 
     @Override
     public void onItemClick(int position) {
-        Exhibition exhibition = exhibitionsList.get(position);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("EXHIBITION",exhibition);
+        Exhibition exhibition = displayedList.get(position);
 
         Bundle bundle1 = new Bundle();
         bundle1.putLong("ID",exhibition.getId());
-        bundle1.putString("TITLE",exhibition.getTitle());
+
         ExhibitionDetailsFragment fragment = new ExhibitionDetailsFragment();
         fragment.setArguments(bundle1);
 
