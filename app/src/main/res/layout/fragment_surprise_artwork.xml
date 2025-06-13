@@ -40,7 +40,7 @@
             <TextView
                 android:id="@+id/surpriseArtworkTitle"
                 android:layout_width="300dp"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:hint="Artwork Name"
                 android:textSize="25sp"
                 android:textColor="@color/black"
@@ -59,7 +59,7 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:hint="Artwork Description"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textColor="@color/black"
                 android:scrollbars="vertical"
                 android:overScrollMode="ifContentScrolls"
