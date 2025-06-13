@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Exhibition Title"
                 android:text="@{exhibition.title}"
-                android:textSize="30sp"
+                android:textSize="27sp"
                 android:gravity="center"
                 android:maxLines="2"
                 android:ellipsize="end"
