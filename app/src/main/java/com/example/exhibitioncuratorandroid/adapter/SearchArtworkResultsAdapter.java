@@ -16,6 +16,7 @@ import com.example.exhibitioncuratorandroid.databinding.ArtworkSearchResultItemB
 import com.example.exhibitioncuratorandroid.model.Artwork;
 import com.example.exhibitioncuratorandroid.model.ArtworkResults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchArtworkResultsAdapter extends RecyclerView.Adapter<SearchArtworkResultsAdapter.SearchArtworkResultsViewHolder> {
@@ -61,6 +62,12 @@ public class SearchArtworkResultsAdapter extends RecyclerView.Adapter<SearchArtw
     public int getItemCount() {
         return artworkList.size();
     }
+
+    public void setFilterList(ArrayList<Artwork> filterList){
+        this.artworkList = filterList;
+        notifyDataSetChanged();
+    }
+
 
     public static class SearchArtworkResultsViewHolder extends RecyclerView.ViewHolder{
         private ArtworkSearchResultItemBinding binding;

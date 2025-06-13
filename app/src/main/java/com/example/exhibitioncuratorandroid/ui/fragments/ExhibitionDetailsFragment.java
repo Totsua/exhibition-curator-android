@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.exhibitioncuratorandroid.R;
@@ -41,11 +42,13 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     private String title;
     private Exhibition currentExhibition;
     private RecyclerView recyclerView;
-    private ArrayList<Artwork> artworks;
+    private ArrayList<Artwork> artworks = new ArrayList<>();
     private SearchArtworkResultsAdapter adapter;
     private ExhibitionsViewModel viewModel;
     private boolean hasShownEmptyToast = false;
-
+    private ArrayList<Artwork> filteredList;
+    private ArrayList<Artwork> displayedList;
+    private String currentQuery = "";
     private ActivityResultLauncher<Intent> backendRequestLauncher;
 
 
@@ -66,13 +69,14 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        getExhibitionDetails();
         initialiseBackButton();
         initialiseEditButton();
+        initialiseSearchBar();
         if(title != null){
             setTitleText();
         }
 
-        getExhibitionDetails();
 
 
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading ->{
@@ -97,6 +101,22 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
     }
 
+    private void initialiseSearchBar() {
+        binding.exhibitionDetailsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterList(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filterList(query);
+                return true;
+            }
+        });
+    }
+
     private void initialiseEditButton() {
         binding.exhibitionDetailsEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +128,14 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
         });
     }
 
+    private void initialiseBackButton() {
+        binding.exhibitionDetailsBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+    }
 
     private void setTitleText() {
         binding.exhibitionDetailsTitle.setText(title);
@@ -120,6 +148,7 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
                 currentExhibition = exhibition;
 
                     artworks = (ArrayList<Artwork>) exhibition.getArtworks();
+                    displayedList = artworks;
                     if(artworks.isEmpty()) {
                         if (!hasShownEmptyToast) {
                             Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
@@ -136,23 +165,38 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
     }
 
+    private void filterList(String query){
+        if(artworks.isEmpty()){return;}
+
+        filteredList = new ArrayList<>();
+        String lowerQuery = query.toLowerCase();
+        for(Artwork artwork: artworks){
+            if(artwork.getTitle().toLowerCase().contains(lowerQuery) ||
+                    artwork.getArtist().getName().toLowerCase().contains(lowerQuery)){
+                filteredList.add(artwork);
+            }
+        }
+
+        displayedList = filteredList;
+        adapter.setFilterList(displayedList);
+//
+//        if(filteredList.isEmpty()){
+//            Toast.makeText(getContext(), "There are no artworks", Toast.LENGTH_SHORT).show();
+//        }else {
+//            adapter.setFilterList(filteredList);
+//        }
+    }
+
     private void displayInRecyclerView(){
         recyclerView = binding.exhibitionDetailsRecyclerView;
-        adapter = new SearchArtworkResultsAdapter(artworks,getContext(),this);
+        adapter = new SearchArtworkResultsAdapter(displayedList,getContext(),this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         recyclerView.setHasFixedSize(true);
         adapter.notifyDataSetChanged();
     }
 
-    private void initialiseBackButton() {
-        binding.exhibitionDetailsBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
-            }
-        });
-    }
+
 
 
     @Override
@@ -165,12 +209,14 @@ public class ExhibitionDetailsFragment extends Fragment implements RecyclerViewI
 
     @Override
     public void onItemClick(int position) {
-       Artwork artwork = artworks.get(position);
+       Artwork artwork = displayedList.get(position);
 //       ApiArtworkId apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
 
        Bundle bundle = new Bundle();
        bundle.putLong("ID", exhibitionId);
+
        bundle.putParcelable("ARTWORK",artwork);
+
 
        ExhibitionArtworkDetailsFragment fragment = new ExhibitionArtworkDetailsFragment();
        fragment.setArguments(bundle);
