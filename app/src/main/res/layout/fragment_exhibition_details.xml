@@ -23,9 +23,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Exhibition"
-            android:textSize="40sp"
+            android:textSize="32sp"
             android:textColor="@color/black"
             android:gravity="center"
+            android:maxLines="4"
+            android:scrollbars="vertical"
+            android:overScrollMode="ifContentScrolls"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,8 +86,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.033"
-            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintVertical_bias="0.03"
+            app:layout_constraintHorizontal_bias="0.98"
             />
 
 
