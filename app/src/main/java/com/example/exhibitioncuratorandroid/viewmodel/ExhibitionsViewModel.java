@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.exhibitioncuratorandroid.model.ApiArtworkId;
 import com.example.exhibitioncuratorandroid.model.Exhibition;
+import com.example.exhibitioncuratorandroid.model.ExhibitionCreateDTO;
 import com.example.exhibitioncuratorandroid.model.ExhibitionPatchDTO;
 import com.example.exhibitioncuratorandroid.repository.ExhibitionsRepository;
 
@@ -24,11 +25,12 @@ public class ExhibitionsViewModel extends AndroidViewModel {
         super(application);
         this.exhibitionsRepository = new ExhibitionsRepository(application);
     }
-    public void createExhibition(String title){
+    public void createExhibition(ExhibitionCreateDTO exhibitionCreateDTO){
         isLoading.setValue(true);
         isSuccessful.setValue(false);
-        exhibitionsRepository.createExhibition(title,isLoading, isSuccessful);
+        exhibitionsRepository.createExhibition(exhibitionCreateDTO,isLoading, isSuccessful);
     }
+
     public MutableLiveData<List<Exhibition>> getAllExhibitions(){
         isLoading.setValue(true);
         return exhibitionsRepository.getAllExhibitions(isLoading);
