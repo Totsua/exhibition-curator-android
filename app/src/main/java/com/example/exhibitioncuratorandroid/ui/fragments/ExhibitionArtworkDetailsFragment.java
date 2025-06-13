@@ -63,6 +63,7 @@ public class ExhibitionArtworkDetailsFragment extends Fragment {
 
     private void setArtworkDetails() {
         binding.exhibitionArtworkDetailsArtTitle.setText(artwork.getTitle());
+        binding.exhibitionArtworkDetailsArtTitle.setMovementMethod(new ScrollingMovementMethod());
         binding.exhibitionArtworkDetailsArtDescription.setText(artwork.getDescription());
         binding.exhibitionArtworkDetailsArtDescription.setMovementMethod(new ScrollingMovementMethod());
         binding.exhibitionArtworkDetailsImage.setContentDescription(artwork.getAltText());
@@ -73,6 +74,7 @@ public class ExhibitionArtworkDetailsFragment extends Fragment {
         ImageView artworkImage = binding.exhibitionArtworkDetailsImage;
         Glide.with(artworkImage)
                 .load(artwork.getImageUrl())
+                .error(R.drawable.ic_exhibition)
                 .into(artworkImage);
     }
 
