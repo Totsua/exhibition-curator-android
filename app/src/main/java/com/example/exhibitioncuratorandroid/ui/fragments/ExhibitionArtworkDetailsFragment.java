@@ -36,7 +36,7 @@ public class ExhibitionArtworkDetailsFragment extends Fragment {
         if (getArguments() != null) {
             exhibitionId = getArguments().getLong("ID");
             artwork = getArguments().getParcelable("ARTWORK");
-//            apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
+            apiArtworkId = new ApiArtworkId(artwork.getId(),artwork.getApiOrigin());
         }
         viewModel = new ViewModelProvider(this).get(ExhibitionsViewModel.class);
     }
