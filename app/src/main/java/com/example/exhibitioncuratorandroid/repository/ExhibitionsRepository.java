@@ -73,9 +73,6 @@ public class ExhibitionsRepository {
                     case 200:
                         List<Exhibition> exhibitionList = response.body();
                         liveExhibitionList.setValue(exhibitionList);
-                        if(exhibitionList.isEmpty()){
-                            Toast.makeText(application, "There are no exhibitions", Toast.LENGTH_SHORT).show();
-                        }
                         break;
                     default:
                         if (response.body() != null) {
